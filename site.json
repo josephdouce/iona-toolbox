@@ -1,0 +1,19 @@
+{
+  "short_name": "QM2 Tools",
+  "name": "QM2 Tools",
+  "icons": [{
+    "src": "icon.png",
+    "type": "image/png",
+    "sizes": "192x192"
+  },
+  {
+    "src": "icon.png",
+    "type": "image/png",
+    "sizes": "600x600"
+  }
+  ],
+  "display": "standalone",
+  "start_url": "/qm2-tools-webapp/index.html",
+  "background_color": "#fafafa",
+  "theme_color": "#fafafa"
+}

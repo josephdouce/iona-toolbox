@@ -1,0 +1,136 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <!-- Site Info-->
+  <meta charset="utf-8">
+  <title>QM2 Tools</title>
+  <meta name="description" content="QM2 Tools">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- WebAppp -->
+  <link rel="manifest" href="site.json">
+  <link rel="apple-touch-icon" href="icon.png">
+  <meta name="theme-color" content="#fafafa">
+
+  <!-- Normalize -->
+  <link rel="stylesheet" href="css/normalize.css">
+
+  <!-- W3.CSS -->
+  <!-- https://www.w3schools.com/w3css/4/w3.css -->
+  <link rel="stylesheet" href="css/w3.css">
+  <!-- https://www.w3schools.com/lib/w3-theme-blue.css -->
+  <link rel="stylesheet" href="css/w3-theme-blue.css">
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+  <!--[if lte IE 9]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+
+  <!-- Add your site or application content here -->
+
+  <div class="w3-content w3-theme-l4">
+
+    <div class="w3-bar w3-theme">
+      <button class="w3-bar-item w3-button w3-theme" onclick="openTab('Valves')">Valves</button>
+      <button class="w3-bar-item w3-button w3-theme" onclick="openTab('About')">About</button>
+    </div>
+
+    <div id="a2hsPanel" class="w3-padding-16 add-panel w3-display-container w3-container w3-pale-green w3-leftbar w3-border-green">
+      <span onclick="this.parentElement.style.display='none'" class="w3-button w3-display-topright">X</span>
+      <button class="w3-button w3-theme add-button">Install</button>
+    </div>
+
+    <div id="Valves" class="w3-container tabPage">
+      <div class="w3-row-padding">
+        <div class="w3-col">
+          <h2>Valves</h2>
+        </div>
+      </div>
+	  
+	  <div class="w3-row-padding ">
+        <div class="w3-col s12 m4 l4">
+		  <label>Search</label>
+          <input class="w3-input w3-border" type="text" id="searchField" onchange="" placeholder="Valve ID"
+            maxlength="13" />
+        </div>
+      </div>
+	  
+	  <div class="w3-row-padding w3-padding-16">
+        <div class="w3-col">
+          <button class="w3-button w3-theme" onclick="search()">Search</button>
+        </div>
+      </div>
+	  
+	  <div class="w3-row-padding">
+        <div class="w3-col s12 m4 l4">
+          <label>Select Valve</label>
+          <select class="w3-select w3-border" id="selectValve" onchange="valveSelected()"></select>
+        </div>
+      </div>
+	  
+	  <div class="w3-row-padding">
+		<div class="w3-col s12 m12 l12">
+          <p id="displayData"></p>
+        </div>
+      </div>
+	  
+    </div>
+
+    <div id="About" class="w3-container tabPage" style="display:none">
+      <div class="w3-row-padding">
+        <div class="w3-col">
+          <h2>About</h2>
+          <p>QM2 Tools</p>
+          <p>Updated: 29-Jun-2019 18:01</p>
+          <p>Joseph Douce 2019</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Boilerplate Scripts -->
+  <script src="js/vendor/modernizr-3.6.0.min.js"></script>
+  <script src="js/vendor/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+  <!-- <script>
+    window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')
+  </script> -->
+  <script src="js/plugins.js"></script>
+
+  <!-- User Scripts -->
+  <script src="js/papaparse.js"></script>
+  <script src="js/main.js"></script>
+  
+  <script>
+    // This is the service worker with the Cache-first network
+
+    // Add this below content to your HTML page, or add the js file to your page at the very top to register service worker
+
+    // Check compatibility for the browser we're running this in
+    if ("serviceWorker" in navigator) {
+      if (navigator.serviceWorker.controller) {
+        console.log("[PWA Builder] active service worker found, no need to register");
+      } else {
+        // Register the service worker
+        navigator.serviceWorker
+          .register("pwabuilder-sw.js", {
+            scope: "./"
+          })
+          .then(function (reg) {
+            console.log("[PWA Builder] Service worker has been registered for scope: " + reg.scope);
+          });
+      }
+    }
+
+  </script>
+
+</body>
+
+</html>
