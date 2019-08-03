@@ -1,17 +1,17 @@
-var data  = null;
+var valves  = null;
 
 // on load function
 async function onLoadFunction() {
 
-  Papa.parse("./data.csv", {
+  Papa.parse("./valves.csv", {
 	  header: true,
 	  download:true,
       complete: function(results) {
           console.log("Finished:", results);
-		  data = results;
-		  for (i = 0; i < data.data.length; i++){
+		  valves = results;
+		  for (i = 0; i < valves.data.length; i++){
 			  var option = document.createElement('option');
-			  option.text = option.value = data.data[i]["VALVE"];
+			  option.text = option.value = valves.data[i]["VALVE"];
 			  document.getElementById("selectValve").add(option);
 		   }
 		   valveSelected()
@@ -31,6 +31,7 @@ input.addEventListener("keyup", function(event) {
   }
 });
 
+// Show selected tab and hide inactive tabs
 function openTab(tabName) {
   var i;
   var x = document.getElementsByClassName("tabPage");
@@ -40,31 +41,34 @@ function openTab(tabName) {
   document.getElementById(tabName).style.display = "block";
 }
 
+// Get valve data for delected valve and display it
 function valveSelected() {
 	var valve = document.getElementById("selectValve").value;
 	document.getElementById("displayData").innerHTML = "";
-	for (i = 0; i < data.data.length; i++){
-		if ( valve == data.data[i]["VALVE"] ){
-			console.log(data.data[i]);
-			for ( var label in data.data[i] ) {
+	for (i = 0; i < valves.data.length; i++){
+		if ( valve == valves.data[i]["VALVE"] ){
+			console.log(valves.data[i]);
+			for ( var label in valves.data[i] ) {
 				console.log(label);
-				console.log(data.data[i][label]);
+				console.log(valves.data[i][label]);
 				document.getElementById("displayData").innerHTML += label;
 				document.getElementById("displayData").innerHTML += ": ";
-				document.getElementById("displayData").innerHTML += data.data[i][label];
+				document.getElementById("displayData").innerHTML += valves.data[i][label];
+				document.getElementById("displayData").innerHTML += "<br>";
 				document.getElementById("displayData").innerHTML += "<br>";
 			}
 		}	
 	}
 }
 
+// Check if serch term is in valve name and if so add it to drop down menu
 function search() {
 	var input = document.getElementById("searchField").value;
 	document.getElementById("selectValve").innerText = null;
-	for (i = 0; i < data.data.length; i++){
-		if ( data.data[i]["VALVE"].includes(input) ){
+	for (i = 0; i < valves.data.length; i++){
+		if ( valves.data[i]["VALVE"].includes(input) ){
 			var option = document.createElement('option');
-			option.text = option.value = data.data[i]["VALVE"];
+			option.text = option.value = valves.data[i]["VALVE"];
 			document.getElementById("selectValve").add(option);
 		}
 	}

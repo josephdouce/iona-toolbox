@@ -10,9 +10,11 @@
   <link rel="icon" type="image/png" href="favicon.png">
 
   <!-- WebAppp -->
-  <link rel="manifest" href="site.json">
+  <link rel="manifest" href="/site.json">
   <link rel="apple-touch-icon" href="icon.png">
   <meta name="theme-color" content="#fafafa">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
   <!-- Normalize -->
   <link rel="stylesheet" href="css/normalize.css">
@@ -38,6 +40,8 @@
 
     <div class="w3-bar w3-theme">
       <button class="w3-bar-item w3-button w3-theme" onclick="openTab('Valves')">Valves</button>
+	  <button class="w3-bar-item w3-button w3-theme" onclick="openTab('2')">2</button>
+	  <button class="w3-bar-item w3-button w3-theme" onclick="openTab('3')">3</button>
       <button class="w3-bar-item w3-button w3-theme" onclick="openTab('About')">About</button>
     </div>
 
@@ -82,13 +86,30 @@
 	  
     </div>
 
-    <div id="About" class="w3-container tabPage" style="display:none">
+    <div id="2" class="w3-container tabPage" style="display:none">
+      <div class="w3-row-padding">
+        <div class="w3-col">
+          <h2>2</h2>
+        </div>
+      </div>
+    </div>
+	
+	<div id="3" class="w3-container tabPage" style="display:none">
+      <div class="w3-row-padding">
+        <div class="w3-col">
+          <h2>3</h2>
+        </div>
+      </div>
+    </div>
+	
+	<div id="About" class="w3-container tabPage" style="display:none">
       <div class="w3-row-padding">
         <div class="w3-col">
           <h2>About</h2>
           <p>QM2 Tools</p>
           <p>Updated: 29-Jun-2019 18:01</p>
-          <p>Joseph Douce 2019</p>
+		  <a href="https://josephdouce.github.io/qm2-tools-webapp">https://josephdouce.github.io/qm2-tools-webapp</a>
+		  <p>© Joseph Douce 2019</p>
         </div>
       </div>
     </div>
@@ -99,9 +120,6 @@
   <script src="js/vendor/modernizr-3.6.0.min.js"></script>
   <script src="js/vendor/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
     crossorigin="anonymous"></script>
-  <!-- <script>
-    window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')
-  </script> -->
   <script src="js/plugins.js"></script>
 
   <!-- User Scripts -->
