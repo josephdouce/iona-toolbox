@@ -79,10 +79,8 @@ function search() {
 window.onload = onLoadFunction();
 
 // webapp install
-let deferredPrompt;
-const addBtn = document.querySelector('.add-button');
-const addPanel = document.querySelector('.add-panel');
-addPanel.style.display = 'none';
+let deferredPrompt = null;
+document.getElementById('installPanel').style.display = 'none';
 
 window.addEventListener('beforeinstallprompt', (e) => {
   console.log("[Main] A2HS Triggered")
@@ -91,21 +89,27 @@ window.addEventListener('beforeinstallprompt', (e) => {
   // Stash the event so it can be triggered later.
   deferredPrompt = e;
   // Update UI to notify the user they can add to home screen
-  addPanel.style.display = 'block';
-
-  addBtn.addEventListener('click', (e) => {
-    // hide our user interface that shows our A2HS button
-    addPanel.style.display = 'none';
-    // Show the prompt
-    deferredPrompt.prompt();
-    // Wait for the user to respond to the prompt
-    deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the A2HS prompt');
-        } else {
-          console.log('User dismissed the A2HS prompt');
-        }
-        deferredPrompt = null;
-      });
-  });
+  document.getElementById('installPanel').style.display = 'block';
 });
+
+async function install() {
+  if (deferredPrompt) {
+	// hide our user interface that shows our A2HS button
+    document.getElementById('installPanel').style.display = 'none';
+	// Show the prompt
+    deferredPrompt.prompt();
+    console.log(deferredPrompt)
+	// Wait for the user to respond to the prompt
+    deferredPrompt.userChoice.then(function(choiceResult){
+
+      if (choiceResult.outcome === 'accepted') {
+      console.log('Your PWA has been installed');
+    } else {
+      console.log('User chose to not install your PWA');
+    }
+
+    deferredPrompt = null;
+
+    });
+  }
+}
