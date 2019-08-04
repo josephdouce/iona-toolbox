@@ -1,4 +1,5 @@
-var valves  = null;
+var valves = null;
+var phones = null;
 
 // on load function
 async function onLoadFunction() {
@@ -15,6 +16,21 @@ async function onLoadFunction() {
 			  document.getElementById("selectValve").add(option);
 		   }
 		   valveSelected()
+      }
+  });
+  
+  Papa.parse("./phones.csv", {
+	  header: true,
+	  download:true,
+      complete: function(results) {
+          console.log("Finished:", results);
+		  phones = results;
+		  for (i = 0; i < phones.data.length; i++){
+			  var option = document.createElement('option');
+			  option.text = option.value = phones.data[i]["NAME"];
+			  document.getElementById("selectPhone").add(option);
+		   }
+		   phoneSelected()
       }
   });
   
@@ -61,6 +77,23 @@ function valveSelected() {
 	}
 }
 
+function phoneSelected() {
+	var phone = document.getElementById("selectPhone").value;
+	document.getElementById("displayDataPhones").innerHTML = "";
+	for (i = 0; i < phones.data.length; i++){
+		if ( phone == phones.data[i]["NAME"] ){
+			console.log(phones.data[i]);
+			for ( var label in phones.data[i] ) {
+				document.getElementById("displayDataPhones").innerHTML += label;
+				document.getElementById("displayDataPhones").innerHTML += ": ";
+				document.getElementById("displayDataPhones").innerHTML += phones.data[i][label];
+				document.getElementById("displayDataPhones").innerHTML += "<br>";
+				document.getElementById("displayDataPhones").innerHTML += "<br>";
+			}
+		}	
+	}
+}
+
 // Check if serch term is in valve name and if so add it to drop down menu
 function search() {
 	var input = document.getElementById("searchField").value;
@@ -73,6 +106,22 @@ function search() {
 		}
 	}
 	valveSelected()
+}
+
+function searchPhones() {
+	var input = document.getElementById("searchFieldPhones").value;
+	document.getElementById("selectPhone").innerText = null;
+	for (i = 0; i < phones.data.length; i++){
+	if ( phones.data[i]["NAME"].includes(input) || 
+		phones.data[i]["CABIN"].includes(input) || 
+		phones.data[i]["PAGER"].includes(input) || 
+		phones.data[i]["PHONE"].includes(input) ){
+			var option = document.createElement('option');
+			option.text = option.value = phones.data[i]["NAME"];
+			document.getElementById("selectPhone").add(option);
+		}
+	}
+	phoneSelected()
 }
 
 // call onload function

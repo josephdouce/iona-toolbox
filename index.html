@@ -41,8 +41,7 @@
 
     <div class="w3-bar w3-theme">
       <button class="w3-bar-item w3-button w3-theme" onclick="openTab('Valves')">Valves</button>
-	  <button class="w3-bar-item w3-button w3-theme" onclick="openTab('2')">2</button>
-	  <button class="w3-bar-item w3-button w3-theme" onclick="openTab('3')">3</button>
+	  <button class="w3-bar-item w3-button w3-theme" onclick="openTab('Phones')">Phones</button>
       <button class="w3-bar-item w3-button w3-theme" onclick="openTab('About')">About</button>
     </div>
 
@@ -87,20 +86,40 @@
 	  
     </div>
 
-    <div id="2" class="w3-container tabPage" style="display:none">
+    <div id="Phones" class="w3-container tabPage">
       <div class="w3-row-padding">
         <div class="w3-col">
-          <h2>2</h2>
+          <h2>Phones</h2>
         </div>
       </div>
-    </div>
-	
-	<div id="3" class="w3-container tabPage" style="display:none">
-      <div class="w3-row-padding">
+	  
+	  <div class="w3-row-padding ">
+        <div class="w3-col s12 m4 l4">
+		  <label>Search</label>
+          <input class="w3-input w3-border" type="text" id="searchFieldPhones" onchange="" placeholder="Name, Number, Pager"
+            maxlength="13" />
+        </div>
+      </div>
+	  
+	  <div class="w3-row-padding w3-padding-16">
         <div class="w3-col">
-          <h2>3</h2>
+          <button class="w3-button w3-theme" onclick="searchPhones()">Search</button>
         </div>
       </div>
+	  
+	  <div class="w3-row-padding">
+        <div class="w3-col s12 m4 l4">
+          <label>Select Phone</label>
+          <select class="w3-select w3-border" id="selectPhone" onchange="phoneSelected()"></select>
+        </div>
+      </div>
+	  
+	  <div class="w3-row-padding">
+		<div class="w3-col s12 m12 l12">
+          <p id="displayDataPhones"></p>
+        </div>
+      </div>
+	  
     </div>
 	
 	<div id="About" class="w3-container tabPage" style="display:none">
@@ -108,7 +127,7 @@
         <div class="w3-col">
           <h2>About</h2>
           <p>QM2 Tools</p>
-          <p>Updated: 29-Jun-2019 18:01</p>
+          <p>Updated: 04-Aug-2019</p>
 		  <p><a href="https://josephdouce.github.io/qm2-tools-webapp">https://josephdouce.github.io/qm2-tools-webapp</a></p>
 		  <p>© Joseph Douce 2019</p>
         </div>
