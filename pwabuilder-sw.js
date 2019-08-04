@@ -2,21 +2,21 @@
 
 const CACHE = "pwabuilder-precache";
 const precacheFiles = [
-  "/qm2-tools-webapp//",
-  "/qm2-tools-webapp//css/main.css",
-  "/qm2-tools-webapp//css/normalize.css",
-  "/qm2-tools-webapp//css/w3-theme-blue.css",
-  "/qm2-tools-webapp//css/w3.css",
-  "/qm2-tools-webapp//favicon.png",
-  "/qm2-tools-webapp//icon.png",
-  "/qm2-tools-webapp//index.html",
-  "/qm2-tools-webapp//js/main.js",
-  "/qm2-tools-webapp//js/papaparse.js",
-  "/qm2-tools-webapp//js/plugins.js",
-  "/qm2-tools-webapp//js/vendor/jquery-3.3.1.min.js",
-  "/qm2-tools-webapp//js/vendor/modernizr-3.6.0.min.js",
-  "/qm2-tools-webapp//site.json",
-  "/qm2-tools-webapp//valves.csv"
+  "/qm2-tools-webapp/",
+  "/qm2-tools-webapp/css/main.css",
+  "/qm2-tools-webapp/css/normalize.css",
+  "/qm2-tools-webapp/css/w3-theme-blue.css",
+  "/qm2-tools-webapp/css/w3.css",
+  "/qm2-tools-webapp/favicon.png",
+  "/qm2-tools-webapp/icon.png",
+  "/qm2-tools-webapp/index.html",
+  "/qm2-tools-webapp/js/main.js",
+  "/qm2-tools-webapp/js/papaparse.js",
+  "/qm2-tools-webapp/js/plugins.js",
+  "/qm2-tools-webapp/js/vendor/jquery-3.3.1.min.js",
+  "/qm2-tools-webapp/js/vendor/modernizr-3.6.0.min.js",
+  "/qm2-tools-webapp/site.json",
+  "/qm2-tools-webapp/valves.csv"
 ];
 
 self.addEventListener("install", function (event) {
