@@ -1,39 +1,93 @@
 var valves = null;
 var phones = null;
+var passphrase = null;
+var passphraseEncrypt = null;
+
+// Check for the various File API support
+if (window.File && window.FileReader && window.FileList && window.Blob) {
+	//Encrypt the selected file and display the data
+  function encryptFile() {
+	 var preview = document.getElementById('encrypt-display');
+	 var file = document.querySelector('input[type=file]').files[0];
+	 var reader = new FileReader()
+
+	 reader.onload = function (event) {
+		passphraseEncrypt = document.getElementById('encrypt-password').value;
+		var ciphertext = CryptoJS.AES.encrypt(event.target.result, passphraseEncrypt).toString();
+		document.getElementById("encrypt-display").innerHTML = ciphertext;
+		}
+		
+	 if (file) {
+	 reader.readAsText(file);
+	 }
+  }
+} else {
+  console.log("Your browser is too old to support HTML5 File API");
+}
+
+// Log in button action
+function login() {
+	
+	passphrase = document.getElementById('login-password').value;
+	
+	// Fetch encrypted .csv file and process is with papa
+	fetch('valves_encrypted.csv')
+	.then(response => response.text())
+	.then((data) => {
+		// Decrypt
+		var bytes  = CryptoJS.AES.decrypt(data, passphrase);
+		var originalText = bytes.toString(CryptoJS.enc.Utf8);
+
+        //if (decryptedHMAC !== encryptedHMAC) {
+        //    alert('Bad passphrase!');
+        //    return;
+        //}
+
+		// Parse decrypted data and phones valves variable 
+		Papa.parse(originalText, {
+			header: true,
+			complete: function(results) {
+			valves = results;
+				for (i = 0; i < valves.data.length; i++){
+				  var option = document.createElement('option');
+				  option.text = option.value = valves.data[i]["VALVE"];
+				  document.getElementById("selectValve").add(option);
+				}
+			valveSelected()
+			document.getElementById("login-page").style.display = "none";
+			}
+		});
+	});
+  
+	// Fetch encrypted .csv file and process is with papa
+	fetch('phones_encrypted.csv')
+	.then(response => response.text())
+	.then((data) => {
+		// Decrypt
+		var bytes  = CryptoJS.AES.decrypt(data, passphrase);
+		var originalText = bytes.toString(CryptoJS.enc.Utf8);
+
+		// Parse decrypted data and populate valves variable 
+		Papa.parse(originalText, {
+			header: true,
+			complete: function(results) {
+			phones = results;
+			for (i = 0; i < phones.data.length; i++){
+				var option = document.createElement('option');
+				option.text = option.value = phones.data[i]["NAME"];
+				document.getElementById("selectPhone").add(option);
+			}
+			phoneSelected()
+			document.getElementById("login-page").style.display = "none";
+			document.getElementById("main-content").style.display = "block";
+			}
+		});
+	});  
+}
 
 // on load function
 async function onLoadFunction() {
-
-  Papa.parse("./valves.csv", {
-	  header: true,
-	  download:true,
-      complete: function(results) {
-          console.log("Finished:", results);
-		  valves = results;
-		  for (i = 0; i < valves.data.length; i++){
-			  var option = document.createElement('option');
-			  option.text = option.value = valves.data[i]["VALVE"];
-			  document.getElementById("selectValve").add(option);
-		   }
-		   valveSelected()
-      }
-  });
-  
-  Papa.parse("./phones.csv", {
-	  header: true,
-	  download:true,
-      complete: function(results) {
-          console.log("Finished:", results);
-		  phones = results;
-		  for (i = 0; i < phones.data.length; i++){
-			  var option = document.createElement('option');
-			  option.text = option.value = phones.data[i]["NAME"];
-			  document.getElementById("selectPhone").add(option);
-		   }
-		   phoneSelected()
-      }
-  });
-  
+	document.getElementById("main-content").style.display = "none";
 }
 
 // Execute a function when the user releases a key on the keyboard
@@ -52,6 +106,14 @@ document.getElementById("searchFieldPhones").addEventListener("keyup", function(
   }
 });
 
+// Execute a function when the user releases a key on the keyboard
+document.getElementById("login-password").addEventListener("keyup", function(event) {
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    login()
+  }
+});
+
 // Show selected tab and hide inactive tabs
 function openTab(tabName) {
   var i;
@@ -62,16 +124,13 @@ function openTab(tabName) {
   document.getElementById(tabName).style.display = "block";
 }
 
-// Get valve data for delected valve and display it
+// Get valve data for selected valve and display it
 function valveSelected() {
 	var valve = document.getElementById("selectValve").value;
 	document.getElementById("displayData").innerHTML = "";
 	for (i = 0; i < valves.data.length; i++){
 		if ( valve == valves.data[i]["VALVE"] ){
-			console.log(valves.data[i]);
 			for ( var label in valves.data[i] ) {
-				console.log(label);
-				console.log(valves.data[i][label]);
 				document.getElementById("displayData").innerHTML += label;
 				document.getElementById("displayData").innerHTML += ": ";
 				document.getElementById("displayData").innerHTML += valves.data[i][label];
@@ -82,12 +141,12 @@ function valveSelected() {
 	}
 }
 
+// Get valve data for selected phone and display it
 function phoneSelected() {
 	var phone = document.getElementById("selectPhone").value;
 	document.getElementById("displayDataPhones").innerHTML = "";
 	for (i = 0; i < phones.data.length; i++){
 		if ( phone == phones.data[i]["NAME"] ){
-			console.log(phones.data[i]);
 			for ( var label in phones.data[i] ) {
 				document.getElementById("displayDataPhones").innerHTML += label;
 				document.getElementById("displayDataPhones").innerHTML += ": ";
@@ -99,12 +158,12 @@ function phoneSelected() {
 	}
 }
 
-// Check if serch term is in valve name and if so add it to drop down menu
-function search() {
+// Search through valves and populate drop down menu with matches
+function searchValves() {
 	var input = document.getElementById("searchField").value;
 	document.getElementById("selectValve").innerText = null;
 	for (i = 0; i < valves.data.length; i++){
-		if ( valves.data[i]["VALVE"].includes(input) ){
+		if ( valves.data[i]["VALVE"].toLowerCase().includes(input.toLowerCase()) ){
 			var option = document.createElement('option');
 			option.text = option.value = valves.data[i]["VALVE"];
 			document.getElementById("selectValve").add(option);
@@ -113,14 +172,15 @@ function search() {
 	valveSelected()
 }
 
+// Search through phones and populate drop down menu with matches
 function searchPhones() {
 	var input = document.getElementById("searchFieldPhones").value;
 	document.getElementById("selectPhone").innerText = null;
 	for (i = 0; i < phones.data.length; i++){
-	if ( phones.data[i]["NAME"].includes(input) || 
-		phones.data[i]["CABIN"].includes(input) || 
-		phones.data[i]["PAGER"].includes(input) || 
-		phones.data[i]["PHONE"].includes(input) ){
+	if ( phones.data[i]["NAME"].toLowerCase().includes(input.toLowerCase()) || 
+		phones.data[i]["CABIN"] == input || 
+		phones.data[i]["PAGER"] == input || 
+		phones.data[i]["PHONE"] == input ){
 			var option = document.createElement('option');
 			option.text = option.value = phones.data[i]["NAME"];
 			document.getElementById("selectPhone").add(option);
@@ -129,10 +189,10 @@ function searchPhones() {
 	phoneSelected()
 }
 
-// call onload function
+// Call onload function
 window.onload = onLoadFunction();
 
-// webapp install
+// Webapp install
 let deferredPrompt = null;
 document.getElementById('installPanel').style.display = 'none';
 
@@ -148,11 +208,10 @@ window.addEventListener('beforeinstallprompt', (e) => {
 
 async function install() {
   if (deferredPrompt) {
-	// hide our user interface that shows our A2HS button
+	// Hide our user interface that shows our A2HS button
     document.getElementById('installPanel').style.display = 'none';
 	// Show the prompt
     deferredPrompt.prompt();
-    console.log(deferredPrompt)
 	// Wait for the user to respond to the prompt
     deferredPrompt.userChoice.then(function(choiceResult){
 

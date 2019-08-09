@@ -1,174 +1,236 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="no-js" lang="">
+	<head>
+	  <!-- Site Info-->
+	  <meta charset="utf-8">
+	  <title>QM2 Tools</title>
+	  <meta name="description" content="QM2 Tools">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <link rel="icon" type="image/png" href="favicon.png">
 
-<head>
-  <!-- Site Info-->
-  <meta charset="utf-8">
-  <title>QM2 Tools</title>
-  <meta name="description" content="QM2 Tools">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/png" href="favicon.png">
+	  <!-- WebAppp -->
+	  <link rel="manifest" href="/qm2-tools-webapp/site.json">
+	  <link rel="apple-touch-icon" href="icon.png">
+	  <meta name="theme-color" content="#fafafa">
+	  <meta name="apple-mobile-web-app-capable" content="yes">
+	  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	  <meta name="mobile-web-app-capable" content="yes">
 
-  <!-- WebAppp -->
-  <link rel="manifest" href="/qm2-tools-webapp/site.json">
-  <link rel="apple-touch-icon" href="icon.png">
-  <meta name="theme-color" content="#fafafa">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="mobile-web-app-capable" content="yes">
+	  <!-- Normalize -->
+	  <link rel="stylesheet" href="css/normalize.css">
 
-  <!-- Normalize -->
-  <link rel="stylesheet" href="css/normalize.css">
+	  <!-- W3.CSS -->
+	  <!-- https://www.w3schools.com/w3css/4/w3.css -->
+	  <link rel="stylesheet" href="css/w3.css">
+	  <!-- https://www.w3schools.com/lib/w3-theme-blue.css -->
+	  <link rel="stylesheet" href="css/w3-theme-blue.css">
 
-  <!-- W3.CSS -->
-  <!-- https://www.w3schools.com/w3css/4/w3.css -->
-  <link rel="stylesheet" href="css/w3.css">
-  <!-- https://www.w3schools.com/lib/w3-theme-blue.css -->
-  <link rel="stylesheet" href="css/w3-theme-blue.css">
+	  <!-- Main CSS -->
+	  <link rel="stylesheet" href="css/main.css">
+	</head>
 
-  <!-- Main CSS -->
-  <link rel="stylesheet" href="css/main.css">
-</head>
+	<body>
+	  <!--[if lte IE 9]>
+		<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+	  <![endif]-->
 
-<body>
-  <!--[if lte IE 9]>
-    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-  <![endif]-->
+	  <!-- Add your site or application content here -->
 
-  <!-- Add your site or application content here -->
+	<div id="login-page" class="w3-content w3-theme-l4 w3-padding-16">
+		<div class="w3-row-padding  w3-padding-16 w3-display-container"style="min-height:60px">
+			<div class="w3-col s12 m4 l3 w3-display-middle">
+				<input id="login-password"
+					   type="password"
+					   name="password"
+					   placeholder="passphrase"
+					   class="w3-input w3-border"
+					   autofocus/>
+			</div>
+		</div>
+		<div class="w3-row-padding w3-padding-16 w3-display-container" style="min-height:60px">
+			<div class="w3-col s12 m4 l3 w3-display-middle">
+				<button id="login-button" class="w3-button w3-theme" onclick="login()" style="width:100%">Log In</button>
+			</div>
+		</div>
+	</div>
 
-  <div class="w3-content w3-theme-l4">
+	  <div id="main-content" class="w3-content w3-theme-l4">
 
-    <div class="w3-bar w3-theme">
-      <button class="w3-bar-item w3-button w3-theme" onclick="openTab('Valves')">Valves</button>
-	  <button class="w3-bar-item w3-button w3-theme" onclick="openTab('Phones')">Phones</button>
-      <button class="w3-bar-item w3-button w3-theme" onclick="openTab('About')">About</button>
-    </div>
+		<div class="w3-bar w3-theme">
+		  <button class="w3-bar-item w3-button w3-theme" onclick="openTab('Valves')">Valves</button>
+		  <button class="w3-bar-item w3-button w3-theme" onclick="openTab('Phones')">Phones</button>
+		  <button class="w3-bar-item w3-button w3-theme" onclick="openTab('About')">About</button>
+		  <button class="w3-bar-item w3-button w3-theme" onclick="openTab('Dev')">Dev</button>
+		</div>
 
-    <div id="installPanel" class="w3-padding-16 add-panel w3-display-container w3-container w3-pale-green w3-leftbar w3-border-green">
-      <span onclick="this.parentElement.style.display='none'" class="w3-button w3-display-topright">X</span>
-      <button class="w3-button w3-theme add-button" onclick="install()">Install</button>
-    </div>
+		<div id="installPanel" class="w3-padding-16 add-panel w3-display-container w3-container w3-pale-green w3-leftbar w3-border-green">
+		  <span onclick="this.parentElement.style.display='none'" class="w3-button w3-display-topright">X</span>
+		  <button class="w3-button w3-theme add-button" onclick="install()">Install</button>
+		</div>
 
-    <div id="Valves" class="w3-container tabPage">
-      <div class="w3-row-padding">
-        <div class="w3-col">
-          <h2>Valves</h2>
-        </div>
-      </div>
+		<div id="Valves" class="w3-container tabPage">
+		  <div class="w3-row-padding">
+			<div class="w3-col">
+			  <h2>Valves</h2>
+			</div>
+		  </div>
+		  
+		  <div class="w3-row-padding ">
+			<div class="w3-col s12 m4 l4">
+			  <label>Search</label>
+			  <input class="w3-input w3-border" type="text" id="searchField" onchange="" placeholder="Valve ID"
+				maxlength="13" />
+			</div>
+		  </div>
+		  
+		  <div class="w3-row-padding w3-padding-16">
+			<div class="w3-col">
+			  <button class="w3-button w3-theme" onclick="searchValves()">Search</button>
+			</div>
+		  </div>
+		  
+		  <div class="w3-row-padding">
+			<div class="w3-col s12 m4 l4">
+			  <label>Select Valve</label>
+			  <select class="w3-select w3-border" id="selectValve" onchange="valveSelected()"></select>
+			</div>
+		  </div>
+		  
+		  <div class="w3-row-padding">
+			<div class="w3-col s12 m12 l12">
+			  <p id="displayData"></p>
+			</div>
+		  </div>
+		  
+		</div>
+
+		<div id="Phones" class="w3-container tabPage" style="display:none">
+		  <div class="w3-row-padding">
+			<div class="w3-col">
+			  <h2>Phones</h2>
+			</div>
+		  </div>
+		  
+		  <div class="w3-row-padding ">
+			<div class="w3-col s12 m4 l4">
+			  <label>Search</label>
+			  <input class="w3-input w3-border" type="text" id="searchFieldPhones" onchange="" placeholder="Name, Number, Pager"
+				maxlength="13" />
+			</div>
+		  </div>
+		  
+		  <div class="w3-row-padding w3-padding-16">
+			<div class="w3-col">
+			  <button class="w3-button w3-theme" onclick="searchPhones()">Search</button>
+			</div>
+		  </div>
+		  
+		  <div class="w3-row-padding">
+			<div class="w3-col s12 m4 l4">
+			  <label>Select Phone</label>
+			  <select class="w3-select w3-border" id="selectPhone" onchange="phoneSelected()"></select>
+			</div>
+		  </div>
+		  
+		  <div class="w3-row-padding">
+			<div class="w3-col s12 m12 l12">
+			  <p id="displayDataPhones"></p>
+			</div>
+		  </div>
+		  
+		</div>
+		
+		<div id="About" class="w3-container tabPage" style="display:none">
+		  <div class="w3-row-padding">
+			<div class="w3-col">
+			  <h2>About</h2>
+			  <p>QM2 Tools</p>
+			  <p>Updated: 08-Aug-2019</p>
+			  <p>Secured with AES Encryption</p>
+			  <p><a href="https://josephdouce.github.io/qm2-tools-webapp">https://josephdouce.github.io/qm2-tools-webapp</a></p>
+			  <p>© Joseph Douce 2019</p>
+			</div>
+		  </div>
+		</div>
+		
+		<div id="Dev" class="w3-container tabPage" style="display:none">
+		
+			<div class="w3-row-padding">
+				<div class="w3-col">
+					<h2>Dev Tools</h2>
+				</div>
+			</div>
+			
+			<div class="w3-row-padding w3-padding-16">
+				<div class="w3-col">
+					<input type="file"
+					   id="inputFile" 
+					   name="avatar"
+					   accept=".csv"
+					   class="w3-button w3-theme">
+					   
+				</div>
+			</div>
+			
+			<div class="w3-row-padding">
+				<div class="w3-col">
+					<input id="encrypt-password"
+						   type="password"
+						   name="encrypt-password"
+						   placeholder="passphrase"
+						   class="w3-input w3-border"
+						   autofocus/>
+				 </div>
+			</div>
+			
+			<div class="w3-row-padding w3-padding-16">
+				<div class="w3-col">
+					<button class="w3-button w3-theme" onclick="encryptFile()">Encrypt</button>
+				</div>
+			</div>
+			
+			<div class="w3-row-padding">
+				<div class="w3-col">
+					<p id="encrypt-display" class="w3-code">Encrypted data will be displayed here</p>
+				</div>
+			</div>
+		</div>
+
+	  <!-- Boilerplate Scripts -->
+	  <script src="js/vendor/modernizr-3.6.0.min.js"></script>
+	  <script src="js/vendor/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous"></script>
+	  <script src="js/plugins.js"></script>
+
+	  <!-- User Scripts -->
+	  <script src="js/crypto-js.min.js" integrity="sha384-lp4k1VRKPU9eBnPePjnJ9M2RF3i7PC30gXs70+elCVfgwLwx1tv5+ctxdtwxqZa7" crossorigin="anonymous"></script>
+	  <script src="js/papaparse.js"></script>
+	  <script src="js/main.js"></script>
 	  
-	  <div class="w3-row-padding ">
-        <div class="w3-col s12 m4 l4">
-		  <label>Search</label>
-          <input class="w3-input w3-border" type="text" id="searchField" onchange="" placeholder="Valve ID"
-            maxlength="13" />
-        </div>
-      </div>
+	  <script>
 	  
-	  <div class="w3-row-padding w3-padding-16">
-        <div class="w3-col">
-          <button class="w3-button w3-theme" onclick="search()">Search</button>
-        </div>
-      </div>
-	  
-	  <div class="w3-row-padding">
-        <div class="w3-col s12 m4 l4">
-          <label>Select Valve</label>
-          <select class="w3-select w3-border" id="selectValve" onchange="valveSelected()"></select>
-        </div>
-      </div>
-	  
-	  <div class="w3-row-padding">
-		<div class="w3-col s12 m12 l12">
-          <p id="displayData"></p>
-        </div>
-      </div>
-	  
-    </div>
+		// This is the service worker with the Cache-first network
 
-    <div id="Phones" class="w3-container tabPage" style="display:none">
-      <div class="w3-row-padding">
-        <div class="w3-col">
-          <h2>Phones</h2>
-        </div>
-      </div>
-	  
-	  <div class="w3-row-padding ">
-        <div class="w3-col s12 m4 l4">
-		  <label>Search</label>
-          <input class="w3-input w3-border" type="text" id="searchFieldPhones" onchange="" placeholder="Name, Number, Pager"
-            maxlength="13" />
-        </div>
-      </div>
-	  
-	  <div class="w3-row-padding w3-padding-16">
-        <div class="w3-col">
-          <button class="w3-button w3-theme" onclick="searchPhones()">Search</button>
-        </div>
-      </div>
-	  
-	  <div class="w3-row-padding">
-        <div class="w3-col s12 m4 l4">
-          <label>Select Phone</label>
-          <select class="w3-select w3-border" id="selectPhone" onchange="phoneSelected()"></select>
-        </div>
-      </div>
-	  
-	  <div class="w3-row-padding">
-		<div class="w3-col s12 m12 l12">
-          <p id="displayDataPhones"></p>
-        </div>
-      </div>
-	  
-    </div>
-	
-	<div id="About" class="w3-container tabPage" style="display:none">
-      <div class="w3-row-padding">
-        <div class="w3-col">
-          <h2>About</h2>
-          <p>QM2 Tools</p>
-          <p>Updated: 04-Aug-2019</p>
-		  <p><a href="https://josephdouce.github.io/qm2-tools-webapp">https://josephdouce.github.io/qm2-tools-webapp</a></p>
-		  <p>© Joseph Douce 2019</p>
-        </div>
-      </div>
-    </div>
+		// Add this below content to your HTML page, or add the js file to your page at the very top to register service worker
 
-  </div>
+		// Check compatibility for the browser we're running this in
+		if ("serviceWorker" in navigator) {
+		  if (navigator.serviceWorker.controller) {
+			console.log("[PWA Builder] active service worker found, no need to register");
+		  } else {
+			// Register the service worker
+			navigator.serviceWorker
+			  .register("pwabuilder-sw.js", {
+				scope: "./"
+			  })
+			  .then(function (reg) {
+				console.log("[PWA Builder] Service worker has been registered for scope: " + reg.scope);
+			  });
+		  }
+		}
 
-  <!-- Boilerplate Scripts -->
-  <script src="js/vendor/modernizr-3.6.0.min.js"></script>
-  <script src="js/vendor/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous"></script>
-  <script src="js/plugins.js"></script>
+	  </script>
 
-  <!-- User Scripts -->
-  <script src="js/papaparse.js"></script>
-  <script src="js/main.js"></script>
-  
-  <script>
-    // This is the service worker with the Cache-first network
-
-    // Add this below content to your HTML page, or add the js file to your page at the very top to register service worker
-
-    // Check compatibility for the browser we're running this in
-    if ("serviceWorker" in navigator) {
-      if (navigator.serviceWorker.controller) {
-        console.log("[PWA Builder] active service worker found, no need to register");
-      } else {
-        // Register the service worker
-        navigator.serviceWorker
-          .register("pwabuilder-sw.js", {
-            scope: "./"
-          })
-          .then(function (reg) {
-            console.log("[PWA Builder] Service worker has been registered for scope: " + reg.scope);
-          });
-      }
-    }
-
-  </script>
-
-</body>
+	</body>
 
 </html>

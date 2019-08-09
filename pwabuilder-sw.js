@@ -13,11 +13,12 @@ const precacheFiles = [
   "/qm2-tools-webapp/js/main.js",
   "/qm2-tools-webapp/js/papaparse.js",
   "/qm2-tools-webapp/js/plugins.js",
+  "/qm2-tools-webapp/js/crypto-js.min.js",
   "/qm2-tools-webapp/js/vendor/jquery-3.3.1.min.js",
   "/qm2-tools-webapp/js/vendor/modernizr-3.6.0.min.js",
   "/qm2-tools-webapp/site.json",
-  "/qm2-tools-webapp/valves.csv",
-  "/qm2-tools-webapp/phones.csv"
+  "/qm2-tools-webapp/valves_encrypted.csv",
+  "/qm2-tools-webapp/phones_encrypted.csv"
 ];
 
 self.addEventListener("install", function (event) {
