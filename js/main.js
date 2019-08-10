@@ -3,6 +3,15 @@ var phones = null;
 var passphrase = null;
 var passphraseEncrypt = null;
 
+function sendMail() {
+	var recipient="josephdouce";
+	var at = String.fromCharCode(64);
+	var dotcom="gmail.com";
+    document.location.href = "mailto:" + recipient + at + dotcom + "?subject="
+        + encodeURIComponent("QM2 Tools")
+        + "&body=" + encodeURIComponent("Sent from QM2 Tools");
+}
+
 // Check for the various File API support
 if (window.File && window.FileReader && window.FileList && window.Blob) {
 	//Encrypt the selected file and display the data
@@ -18,7 +27,10 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 		}
 		
 	 if (file) {
-	 reader.readAsText(file);
+		reader.readAsText(file);
+	 }
+	 else {
+		document.getElementById("encrypt-display").innerHTML = "No file selected"; 
 	 }
   }
 } else {
@@ -30,18 +42,21 @@ function login() {
 	
 	passphrase = document.getElementById('login-password').value;
 	
+	// Valves 
+	
 	// Fetch encrypted .csv file and process is with papa
 	fetch('valves_encrypted.csv')
 	.then(response => response.text())
 	.then((data) => {
 		// Decrypt
 		var bytes  = CryptoJS.AES.decrypt(data, passphrase);
-		var originalText = bytes.toString(CryptoJS.enc.Utf8);
-
-        //if (decryptedHMAC !== encryptedHMAC) {
-        //    alert('Bad passphrase!');
-        //    return;
-        //}
+		try{
+			var originalText = bytes.toString(CryptoJS.enc.Utf8);
+		}
+		catch(err){
+			document.getElementById('passwordPanel').style.display = "block";
+			return;
+		}
 
 		// Parse decrypted data and phones valves variable 
 		Papa.parse(originalText, {
@@ -55,9 +70,13 @@ function login() {
 				}
 			valveSelected()
 			document.getElementById("login-page").style.display = "none";
+			document.getElementById('passwordPanel').style.display = "none";
+			document.getElementById("main-content").style.display = "block";
 			}
 		});
 	});
+	
+	// Phones 
   
 	// Fetch encrypted .csv file and process is with papa
 	fetch('phones_encrypted.csv')
@@ -65,7 +84,12 @@ function login() {
 	.then((data) => {
 		// Decrypt
 		var bytes  = CryptoJS.AES.decrypt(data, passphrase);
-		var originalText = bytes.toString(CryptoJS.enc.Utf8);
+		try{
+			var originalText = bytes.toString(CryptoJS.enc.Utf8);
+		}
+		catch(err){
+			return;
+		}
 
 		// Parse decrypted data and populate valves variable 
 		Papa.parse(originalText, {
@@ -78,8 +102,36 @@ function login() {
 				document.getElementById("selectPhone").add(option);
 			}
 			phoneSelected()
-			document.getElementById("login-page").style.display = "none";
-			document.getElementById("main-content").style.display = "block";
+			}
+		});
+	});  
+	
+	// Breakers
+	
+	// Fetch encrypted .csv file and process is with papa
+	fetch('phones_encrypted.csv')
+	.then(response => response.text())
+	.then((data) => {
+		// Decrypt
+		var bytes  = CryptoJS.AES.decrypt(data, passphrase);
+		try{
+			var originalText = bytes.toString(CryptoJS.enc.Utf8);
+		}
+		catch(err){
+			return;
+		}
+
+		// Parse decrypted data and populate valves variable 
+		Papa.parse(originalText, {
+			header: true,
+			complete: function(results) {
+			phones = results;
+			for (i = 0; i < phones.data.length; i++){
+				var option = document.createElement('option');
+				option.text = option.value = phones.data[i]["NAME"];
+				document.getElementById("selectPhone").add(option);
+			}
+			phoneSelected()
 			}
 		});
 	});  
@@ -94,7 +146,7 @@ async function onLoadFunction() {
 document.getElementById("searchField").addEventListener("keyup", function(event) {
   // Number 13 is the "Enter" key on the keyboard
   if (event.keyCode === 13) {
-    search()
+    searchValves()
   }
 });
 

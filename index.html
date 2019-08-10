@@ -28,6 +28,13 @@
 	  <!-- Main CSS -->
 	  <link rel="stylesheet" href="css/main.css">
 	</head>
+	
+	<!-- Icons -->
+	<!-- https://cdn.materialdesignicons.com/3.8.95/css/materialdesignicons.min.css -->
+    <link
+	  href="https://cdn.materialdesignicons.com/3.8.95/css/materialdesignicons.min.css"
+      rel="stylesheet"
+    />
 
 	<body>
 	  <!--[if lte IE 9]>
@@ -36,9 +43,10 @@
 
 	  <!-- Add your site or application content here -->
 
-	<div id="login-page" class="w3-content w3-theme-l4 w3-padding-16">
-		<div class="w3-row-padding  w3-padding-16 w3-display-container"style="min-height:60px">
-			<div class="w3-col s12 m4 l3 w3-display-middle">
+	<div id="login-page" class="w3-content w3-theme-l4 w3-padding-16" style="height:100vh">
+	
+		<div class="w3-row-padding  w3-padding-16 w3-display-container"style="height:50vh">
+			<div class="w3-col s12 m4 l3 w3-display-bottommiddle">
 				<input id="login-password"
 					   type="password"
 					   name="password"
@@ -47,28 +55,102 @@
 					   autofocus/>
 			</div>
 		</div>
+		
 		<div class="w3-row-padding w3-padding-16 w3-display-container" style="min-height:60px">
 			<div class="w3-col s12 m4 l3 w3-display-middle">
 				<button id="login-button" class="w3-button w3-theme" onclick="login()" style="width:100%">Log In</button>
 			</div>
 		</div>
+		
+		<div id="passwordPanel" 
+			class="w3-padding-16 w3-display-container w3-container w3-pale-red w3-leftbar w3-border-red" 
+			style="display:none">
+			<span onclick="this.parentElement.style.display='none'" class="w3-button w3-display-topright">X</span>
+			Incorrect Password
+		</div>
+		
 	</div>
-
-	  <div id="main-content" class="w3-content w3-theme-l4">
-
-		<div class="w3-bar w3-theme">
-		  <button class="w3-bar-item w3-button w3-theme" onclick="openTab('Valves')">Valves</button>
-		  <button class="w3-bar-item w3-button w3-theme" onclick="openTab('Phones')">Phones</button>
-		  <button class="w3-bar-item w3-button w3-theme" onclick="openTab('About')">About</button>
-		  <button class="w3-bar-item w3-button w3-theme" onclick="openTab('Dev')">Dev</button>
+	
+	<div id="main-content" class="w3-content w3-theme-l4" style="min-height:100vh">
+	
+		<div class="w3-display-container w3-container w3-theme header" id="myHeader">
+			<i
+				class="mdi mdi-home w3-theme w3-display-topleft w3-xlarge" 
+				style="z-index:1; padding:10px;"
+				onclick="openTab('Home')"
+			></i>
+			<i
+				class="mdi mdi-menu w3-theme w3-display-topright w3-xlarge" 
+				style="z-index:1; padding:10px;"
+				onclick="openTab('Home')"
+			></i>
+			<div class="w3-center">
+				<h1 class="w3-xlarge w3-animate-bottom">QM2 Tools</h1>
+			</div>
 		</div>
-
+		
 		<div id="installPanel" class="w3-padding-16 add-panel w3-display-container w3-container w3-pale-green w3-leftbar w3-border-green">
-		  <span onclick="this.parentElement.style.display='none'" class="w3-button w3-display-topright">X</span>
-		  <button class="w3-button w3-theme add-button" onclick="install()">Install</button>
+			<span onclick="this.parentElement.style.display='none'" class="w3-button w3-display-topright">X</span>
+			<button class="w3-button w3-theme add-button" onclick="install()">Install</button>
+		</div>
+		
+		<!-- Home Tab -->
+		<div id="Home" class="w3-row-padding w3-center w3-margin-top tabPage">
+		
+			<div class="w3-col l3 m4 s6 w3-margin-bottom">
+				<div class="w3-card w3-container w3-display-container w3-theme-l5" style="padding-top: 100%;">
+				  <i
+					class="mdi mdi-reflect-vertical mdi-rotate-90 w3-margin-bottom w3-text-theme w3-hover-opacity w3-display-middle w3-jumbo"
+					onclick="openTab('Valves')"
+				  ></i>
+				  <p class="w3-text-theme w3-display-topmiddle">Valves</p>
+				</div>
+			</div>
+			
+			<div class="w3-col l3 m4 s6 w3-margin-bottom">
+				<div class="w3-card w3-container w3-display-container w3-theme-l5" style="padding-top: 100%;">
+				  <i
+					class="mdi mdi-phone w3-margin-bottom w3-text-theme w3-hover-opacity w3-display-middle w3-jumbo"
+					onclick="openTab('Phones')"
+				  ></i>
+				  <p class="w3-text-theme w3-display-topmiddle">Phones</p>
+				</div>
+			</div>
+			
+			<div class="w3-col l3 m4 s6 w3-margin-bottom">
+				<div class="w3-card w3-container w3-display-container w3-theme-l5" style="padding-top: 100%;">
+				  <i
+					class="mdi mdi-flash-outline w3-margin-bottom w3-text-theme w3-hover-opacity w3-display-middle w3-jumbo"
+					onclick="openTab('Breakers')"
+				  ></i>
+				  <p class="w3-text-theme w3-display-topmiddle">Breakers</p>
+				</div>
+			</div>
+			
+			<div class="w3-col l3 m4 s6 w3-margin-bottom">
+				<div class="w3-card w3-container w3-display-container w3-theme-l5" style="padding-top: 100%;">
+				  <i
+					class="mdi mdi-caps-lock w3-margin-bottom w3-text-theme w3-hover-opacity w3-display-middle w3-jumbo"
+					onclick="openTab('About')"
+				  ></i>
+				  <p class="w3-text-theme w3-display-topmiddle">About</p>
+				</div>
+			</div>
+			
+			<div class="w3-col l3 m4 s6 w3-margin-bottom">
+				<div class="w3-card w3-container w3-display-container w3-theme-l5" style="padding-top: 100%;">
+				  <i
+					class="mdi mdi-wrench w3-margin-bottom w3-text-theme w3-hover-opacity w3-display-middle w3-jumbo"
+					onclick="openTab('Dev')"
+				  ></i>
+				  <p class="w3-text-theme w3-display-topmiddle">Dev</p>
+				</div>
+			</div>
+			
 		</div>
 
-		<div id="Valves" class="w3-container tabPage">
+		<!-- Valves Tab -->
+		<div id="Valves" class="w3-container tabPage" style="display:none">
 		  <div class="w3-row-padding">
 			<div class="w3-col">
 			  <h2>Valves</h2>
@@ -104,6 +186,7 @@
 		  
 		</div>
 
+		<!-- Phones Tab -->
 		<div id="Phones" class="w3-container tabPage" style="display:none">
 		  <div class="w3-row-padding">
 			<div class="w3-col">
@@ -140,6 +223,7 @@
 		  
 		</div>
 		
+		<!-- About Tab -->
 		<div id="About" class="w3-container tabPage" style="display:none">
 		  <div class="w3-row-padding">
 			<div class="w3-col">
@@ -153,6 +237,7 @@
 		  </div>
 		</div>
 		
+		<!-- Dev Tab -->
 		<div id="Dev" class="w3-container tabPage" style="display:none">
 		
 			<div class="w3-row-padding">
@@ -163,17 +248,25 @@
 			
 			<div class="w3-row-padding w3-padding-16">
 				<div class="w3-col">
-					<input type="file"
-					   id="inputFile" 
-					   name="avatar"
-					   accept=".csv"
-					   class="w3-button w3-theme">
-					   
+					<button class="w3-button w3-theme" onclick="sendMail()">Suggest Update</button>
 				</div>
 			</div>
 			
 			<div class="w3-row-padding">
 				<div class="w3-col">
+					<label>Select File to Encrypt</label>
+					<input type="file"
+					   id="inputFile" 
+					   name="avatar"
+					   accept=".csv"
+					   class="w3-input w3-theme">
+					   
+				</div>
+			</div>
+			
+			<div class="w3-row-padding w3-padding-16">
+				<div class="w3-col">
+					<label>Enter passphrase to use for Encryption</label>
 					<input id="encrypt-password"
 						   type="password"
 						   name="encrypt-password"
@@ -183,7 +276,7 @@
 				 </div>
 			</div>
 			
-			<div class="w3-row-padding w3-padding-16">
+			<div class="w3-row-padding">
 				<div class="w3-col">
 					<button class="w3-button w3-theme" onclick="encryptFile()">Encrypt</button>
 				</div>
@@ -195,6 +288,7 @@
 				</div>
 			</div>
 		</div>
+	</div>
 
 	  <!-- Boilerplate Scripts -->
 	  <script src="js/vendor/modernizr-3.6.0.min.js"></script>
