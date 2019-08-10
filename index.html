@@ -160,7 +160,7 @@
 		  <div class="w3-row-padding ">
 			<div class="w3-col s12 m4 l4">
 			  <label>Search</label>
-			  <input class="w3-input w3-border" type="text" id="searchField" onchange="" placeholder="Valve ID"
+			  <input class="w3-input w3-border" type="text" id="searchFieldValves" onchange="" placeholder="Valve ID"
 				maxlength="13" />
 			</div>
 		  </div>
@@ -180,7 +180,7 @@
 		  
 		  <div class="w3-row-padding">
 			<div class="w3-col s12 m12 l12">
-			  <p id="displayData"></p>
+			  <p id="displayDataValves"></p>
 			</div>
 		  </div>
 		  
@@ -218,6 +218,43 @@
 		  <div class="w3-row-padding">
 			<div class="w3-col s12 m12 l12">
 			  <p id="displayDataPhones"></p>
+			</div>
+		  </div>
+		  
+		</div>
+		
+		<!-- Breakers Tab -->
+		<div id="Breakers" class="w3-container tabPage" style="display:none">
+		  <div class="w3-row-padding">
+			<div class="w3-col">
+			  <h2>Breakers</h2>
+			</div>
+		  </div>
+		  
+		  <div class="w3-row-padding ">
+			<div class="w3-col s12 m4 l4">
+			  <label>Search</label>
+			  <input class="w3-input w3-border" type="text" id="searchFieldBreakers" onchange="" placeholder="Description, Tag"
+				maxlength="13" />
+			</div>
+		  </div>
+		  
+		  <div class="w3-row-padding w3-padding-16">
+			<div class="w3-col">
+			  <button class="w3-button w3-theme" onclick="searchBreakers()">Search</button>
+			</div>
+		  </div>
+		  
+		  <div class="w3-row-padding">
+			<div class="w3-col s12 m4 l4">
+			  <label>Select Breaker</label>
+			  <select class="w3-select w3-border" id="selectBreaker" onchange="breakerSelected()"></select>
+			</div>
+		  </div>
+		  
+		  <div class="w3-row-padding">
+			<div class="w3-col s12 m12 l12">
+			  <p id="displayDataBreakers"></p>
 			</div>
 		  </div>
 		  

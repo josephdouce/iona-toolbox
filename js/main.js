@@ -1,5 +1,6 @@
 var valves = null;
 var phones = null;
+var breakers = null;
 var passphrase = null;
 var passphraseEncrypt = null;
 
@@ -12,10 +13,9 @@ function sendMail() {
         + "&body=" + encodeURIComponent("Sent from QM2 Tools");
 }
 
-// Check for the various File API support
-if (window.File && window.FileReader && window.FileList && window.Blob) {
-	//Encrypt the selected file and display the data
-  function encryptFile() {
+
+//Encrypt the selected file and display the data
+function encryptFile() {
 	 var preview = document.getElementById('encrypt-display');
 	 var file = document.querySelector('input[type=file]').files[0];
 	 var reader = new FileReader()
@@ -32,9 +32,6 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 	 else {
 		document.getElementById("encrypt-display").innerHTML = "No file selected"; 
 	 }
-  }
-} else {
-  console.log("Your browser is too old to support HTML5 File API");
 }
 
 // Log in button action
@@ -63,6 +60,7 @@ function login() {
 			header: true,
 			complete: function(results) {
 			valves = results;
+			console.log(valves);
 				for (i = 0; i < valves.data.length; i++){
 				  var option = document.createElement('option');
 				  option.text = option.value = valves.data[i]["VALVE"];
@@ -109,7 +107,7 @@ function login() {
 	// Breakers
 	
 	// Fetch encrypted .csv file and process is with papa
-	fetch('phones_encrypted.csv')
+	fetch('breaker_encrypted.csv')
 	.then(response => response.text())
 	.then((data) => {
 		// Decrypt
@@ -125,13 +123,13 @@ function login() {
 		Papa.parse(originalText, {
 			header: true,
 			complete: function(results) {
-			phones = results;
-			for (i = 0; i < phones.data.length; i++){
+			breakers = results;
+			for (i = 0; i < breakers.data.length; i++){
 				var option = document.createElement('option');
-				option.text = option.value = phones.data[i]["NAME"];
-				document.getElementById("selectPhone").add(option);
+				option.text = option.value = breakers.data[i]["DESCRIPTION"];
+				document.getElementById("selectBreaker").add(option);
 			}
-			phoneSelected()
+			breakerSelected()
 			}
 		});
 	});  
@@ -143,7 +141,7 @@ async function onLoadFunction() {
 }
 
 // Execute a function when the user releases a key on the keyboard
-document.getElementById("searchField").addEventListener("keyup", function(event) {
+document.getElementById("searchFieldValves").addEventListener("keyup", function(event) {
   // Number 13 is the "Enter" key on the keyboard
   if (event.keyCode === 13) {
     searchValves()
@@ -155,6 +153,14 @@ document.getElementById("searchFieldPhones").addEventListener("keyup", function(
   // Number 13 is the "Enter" key on the keyboard
   if (event.keyCode === 13) {
     searchPhones()
+  }
+});
+
+// Execute a function when the user releases a key on the keyboard
+document.getElementById("searchFieldBreakers").addEventListener("keyup", function(event) {
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    searchBreakers()
   }
 });
 
@@ -179,15 +185,15 @@ function openTab(tabName) {
 // Get valve data for selected valve and display it
 function valveSelected() {
 	var valve = document.getElementById("selectValve").value;
-	document.getElementById("displayData").innerHTML = "";
+	document.getElementById("displayDataValves").innerHTML = "";
 	for (i = 0; i < valves.data.length; i++){
 		if ( valve == valves.data[i]["VALVE"] ){
 			for ( var label in valves.data[i] ) {
-				document.getElementById("displayData").innerHTML += label;
-				document.getElementById("displayData").innerHTML += ": ";
-				document.getElementById("displayData").innerHTML += valves.data[i][label];
-				document.getElementById("displayData").innerHTML += "<br>";
-				document.getElementById("displayData").innerHTML += "<br>";
+				document.getElementById("displayDataValves").innerHTML += label;
+				document.getElementById("displayDataValves").innerHTML += ": ";
+				document.getElementById("displayDataValves").innerHTML += valves.data[i][label];
+				document.getElementById("displayDataValves").innerHTML += "<br>";
+				document.getElementById("displayDataValves").innerHTML += "<br>";
 			}
 		}	
 	}
@@ -210,9 +216,26 @@ function phoneSelected() {
 	}
 }
 
+// Get valve data for selected phone and display it
+function breakerSelected() {
+	var breaker = document.getElementById("selectBreaker").value;
+	document.getElementById("displayDataBreakers").innerHTML = "";
+	for (i = 0; i < breakers.data.length; i++){
+		if ( breaker == breakers.data[i]["DESCRIPTION"] ){
+			for ( var label in breakers.data[i] ) {
+				document.getElementById("displayDataBreakers").innerHTML += label;
+				document.getElementById("displayDataBreakers").innerHTML += ": ";
+				document.getElementById("displayDataBreakers").innerHTML += breakers.data[i][label];
+				document.getElementById("displayDataBreakers").innerHTML += "<br>";
+				document.getElementById("displayDataBreakers").innerHTML += "<br>";
+			}
+		}	
+	}
+}
+
 // Search through valves and populate drop down menu with matches
 function searchValves() {
-	var input = document.getElementById("searchField").value;
+	var input = document.getElementById("searchFieldValves").value;
 	document.getElementById("selectValve").innerText = null;
 	for (i = 0; i < valves.data.length; i++){
 		if ( valves.data[i]["VALVE"].toLowerCase().includes(input.toLowerCase()) ){
@@ -229,16 +252,31 @@ function searchPhones() {
 	var input = document.getElementById("searchFieldPhones").value;
 	document.getElementById("selectPhone").innerText = null;
 	for (i = 0; i < phones.data.length; i++){
-	if ( phones.data[i]["NAME"].toLowerCase().includes(input.toLowerCase()) || 
-		phones.data[i]["CABIN"] == input || 
-		phones.data[i]["PAGER"] == input || 
-		phones.data[i]["PHONE"] == input ){
+		if ( phones.data[i]["NAME"].toLowerCase().includes(input.toLowerCase()) || 
+			phones.data[i]["CABIN"] == input || 
+			phones.data[i]["PAGER"] == input || 
+			phones.data[i]["PHONE"] == input ){
 			var option = document.createElement('option');
 			option.text = option.value = phones.data[i]["NAME"];
 			document.getElementById("selectPhone").add(option);
 		}
 	}
 	phoneSelected()
+}
+
+// Search through phones and populate drop down menu with matches
+function searchBreakers() {
+	var input = document.getElementById("searchFieldBreakers").value;
+	document.getElementById("selectBreaker").innerText = null;
+	for (i = 0; i < breakers.data.length; i++){
+	if ( breakers.data[i]["TAG"].toLowerCase().includes(input.toLowerCase()) || 
+			breakers.data[i]["DESCRIPTION"].toLowerCase().includes(input.toLowerCase()) ){
+			var option = document.createElement('option');
+			option.text = option.value = breakers.data[i]["DESCRIPTION"];
+			document.getElementById("selectBreaker").add(option);
+		}
+	}
+	breakerSelected()
 }
 
 // Call onload function
