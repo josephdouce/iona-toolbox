@@ -18,7 +18,8 @@ const precacheFiles = [
   "/qm2-tools-webapp/js/vendor/modernizr-3.6.0.min.js",
   "/qm2-tools-webapp/site.json",
   "/qm2-tools-webapp/valves_encrypted.csv",
-  "/qm2-tools-webapp/phones_encrypted.csv"
+  "/qm2-tools-webapp/phones_encrypted.csv",
+  "/qm2-tools-webapp/breakers_encrypted.csv"
 ];
 
 self.addEventListener("install", function (event) {
