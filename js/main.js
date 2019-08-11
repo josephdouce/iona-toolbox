@@ -1,8 +1,18 @@
 var valves = null;
 var phones = null;
+var esd = null;
+var ups = null;
 var breakers = null;
 var passphrase = null;
 var passphraseEncrypt = null;
+
+var encryptedFiles = [
+	"phones_encrypted.csv",
+	"valves_encrypted.csv",
+	"breakers_encrypted.csv",
+	"esd_cabinets_encrypted.csv",
+	"ups_locations_encrypted.csv"
+];
 
 function sendMail() {
     var recipient = "josephdouce";
@@ -148,6 +158,64 @@ function login() {
                 }
             });
         });
+		
+	// UPS
+	
+	// Fetch encrypted .csv file and process is with papa
+    fetch('ups_locations_encrypted.csv')
+        .then(response => response.text())
+        .then((data) => {
+            // Decrypt
+            var bytes = CryptoJS.AES.decrypt(data, passphrase);
+            try {
+                var originalText = bytes.toString(CryptoJS.enc.Utf8);
+            } catch (err) {
+                return;
+            }
+
+            // Parse decrypted data and populate valves variable 
+            Papa.parse(originalText, {
+                header: true,
+                complete: function(results) {
+                    ups = results;
+                    for (i = 0; i < ups.data.length; i++) {
+                        var option = document.createElement('option');
+                        option.text = option.value = ups.data[i]["UPS"];
+                        document.getElementById("selectUPS").add(option);
+                    }
+                    upsSelected();
+                }
+            });
+        });
+	
+	//ESD
+	
+    // Fetch encrypted .csv file and process is with papa
+    fetch('esd_cabinets_encrypted.csv')
+        .then(response => response.text())
+        .then((data) => {
+            // Decrypt
+            var bytes = CryptoJS.AES.decrypt(data, passphrase);
+            try {
+                var originalText = bytes.toString(CryptoJS.enc.Utf8);
+            } catch (err) {
+                return;
+            }
+
+            // Parse decrypted data and populate valves variable 
+            Papa.parse(originalText, {
+                header: true,
+                complete: function(results) {
+                    esd = results;
+                    for (i = 0; i < esd.data.length; i++) {
+                        var option = document.createElement('option');
+                        option.text = option.value = esd.data[i]["CABINET"];
+                        document.getElementById("selectESD").add(option);
+                    }
+                    esdSelected();
+                }
+            });
+        });
 }
 
 // on load function
@@ -199,10 +267,10 @@ function openTab(tabName) {
 
 // Get valve data for selected valve and display it
 function valveSelected() {
-    var valve = document.getElementById("selectValve").value;
+    var input = document.getElementById("selectValve").value;
     document.getElementById("displayDataValves").innerHTML = "";
     for (i = 0; i < valves.data.length; i++) {
-        if (valve == valves.data[i]["VALVE"]) {
+        if (input == valves.data[i]["VALVE"]) {
             for (var label in valves.data[i]) {
                 document.getElementById("displayDataValves").innerHTML += label;
                 document.getElementById("displayDataValves").innerHTML += ": ";
@@ -216,10 +284,10 @@ function valveSelected() {
 
 // Get valve data for selected phone and display it
 function phoneSelected() {
-    var phone = document.getElementById("selectPhone").value;
+    var input = document.getElementById("selectPhone").value;
     document.getElementById("displayDataPhones").innerHTML = "";
     for (i = 0; i < phones.data.length; i++) {
-        if (phone == phones.data[i]["NAME"]) {
+        if (input == phones.data[i]["NAME"]) {
             for (var label in phones.data[i]) {
                 document.getElementById("displayDataPhones").innerHTML += label;
                 document.getElementById("displayDataPhones").innerHTML += ": ";
@@ -233,16 +301,50 @@ function phoneSelected() {
 
 // Get valve data for selected phone and display it
 function breakerSelected() {
-    var breaker = document.getElementById("selectBreaker").value;
+    var input = document.getElementById("selectBreaker").value;
     document.getElementById("displayDataBreakers").innerHTML = "";
     for (i = 0; i < breakers.data.length; i++) {
-        if (breaker == breakers.data[i]["DESCRIPTION"]) {
+        if (input == breakers.data[i]["DESCRIPTION"]) {
             for (var label in breakers.data[i]) {
                 document.getElementById("displayDataBreakers").innerHTML += label;
                 document.getElementById("displayDataBreakers").innerHTML += ": ";
                 document.getElementById("displayDataBreakers").innerHTML += breakers.data[i][label];
                 document.getElementById("displayDataBreakers").innerHTML += "<br>";
                 document.getElementById("displayDataBreakers").innerHTML += "<br>";
+            }
+        }
+    }
+}
+
+// Get valve data for selected phone and display it
+function upsSelected() {
+    var input = document.getElementById("selectUPS").value;
+    document.getElementById("displayDataUPS").innerHTML = "";
+    for (i = 0; i < ups.data.length; i++) {
+        if (input == ups.data[i]["UPS"]) {
+            for (var label in ups.data[i]) {
+                document.getElementById("displayDataUPS").innerHTML += label;
+                document.getElementById("displayDataUPS").innerHTML += ": ";
+                document.getElementById("displayDataUPS").innerHTML += ups.data[i][label];
+                document.getElementById("displayDataUPS").innerHTML += "<br>";
+                document.getElementById("displayDataUPS").innerHTML += "<br>";
+            }
+        }
+    }
+}
+
+// Get valve data for selected phone and display it
+function esdSelected() {
+    var input = document.getElementById("selectESD").value;
+    document.getElementById("displayDataESD").innerHTML = "";
+    for (i = 0; i < esd.data.length; i++) {
+        if (input == esd.data[i]["CABINET"]) {
+            for (var label in esd.data[i]) {
+                document.getElementById("displayDataESD").innerHTML += label;
+                document.getElementById("displayDataESD").innerHTML += ": ";
+                document.getElementById("displayDataESD").innerHTML += esd.data[i][label];
+                document.getElementById("displayDataESD").innerHTML += "<br>";
+                document.getElementById("displayDataESD").innerHTML += "<br>";
             }
         }
     }
