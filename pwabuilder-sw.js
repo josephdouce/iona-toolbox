@@ -19,7 +19,9 @@ const precacheFiles = [
   "/qm2-tools-webapp/site.json",
   "/qm2-tools-webapp/valves_encrypted.csv",
   "/qm2-tools-webapp/phones_encrypted.csv",
-  "/qm2-tools-webapp/breakers_encrypted.csv"
+  "/qm2-tools-webapp/breakers_encrypted.csv",
+  "/qm2-tools-webapp/esd_cabinets_encrypted.csv",
+  "/qm2-tools-webapp/ups_locations_encrypted.csv"
 ];
 
 self.addEventListener("install", function (event) {
