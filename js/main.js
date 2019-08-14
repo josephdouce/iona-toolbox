@@ -7,11 +7,11 @@ var passphrase = null;
 var passphraseEncrypt = null;
 
 var encryptedFiles = [
-	"phones_encrypted.csv",
-	"valves_encrypted.csv",
-	"breakers_encrypted.csv",
-	"esd_cabinets_encrypted.csv",
-	"ups_locations_encrypted.csv"
+	"encrypted_csv_files/phones_encrypted.csv",
+	"encrypted_csv_files/valves_encrypted.csv",
+	"encrypted_csv_files/breakers_encrypted.csv",
+	"encrypted_csv_files/esd_cabinets_encrypted.csv",
+	"encrypted_csv_files/ups_locations_encrypted.csv"
 ];
 
 function sendMail() {
@@ -71,7 +71,7 @@ function login() {
     // Valves 
 
     // Fetch encrypted .csv file and process is with papa
-    fetch('valves_encrypted.csv')
+    fetch('encrypted_csv_files/valves_encrypted.csv')
         .then(response => response.text())
         .then((data) => {
             // Decrypt
@@ -104,7 +104,7 @@ function login() {
     // Phones 
 
     // Fetch encrypted .csv file and process is with papa
-    fetch('phones_encrypted.csv')
+    fetch('encrypted_csv_files/phones_encrypted.csv')
         .then(response => response.text())
         .then((data) => {
             // Decrypt
@@ -133,7 +133,7 @@ function login() {
     // Breakers
 
     // Fetch encrypted .csv file and process is with papa
-    fetch('breakers_encrypted.csv')
+    fetch('encrypted_csv_files/breakers_encrypted.csv')
         .then(response => response.text())
         .then((data) => {
             // Decrypt
@@ -162,7 +162,7 @@ function login() {
 	// UPS
 	
 	// Fetch encrypted .csv file and process is with papa
-    fetch('ups_locations_encrypted.csv')
+    fetch('encrypted_csv_files/ups_locations_encrypted.csv')
         .then(response => response.text())
         .then((data) => {
             // Decrypt
@@ -191,7 +191,7 @@ function login() {
 	//ESD
 	
     // Fetch encrypted .csv file and process is with papa
-    fetch('esd_cabinets_encrypted.csv')
+    fetch('encrypted_csv_files/esd_cabinets_encrypted.csv')
         .then(response => response.text())
         .then((data) => {
             // Decrypt
@@ -217,43 +217,6 @@ function login() {
             });
         });
 }
-
-// on load function
-async function onLoadFunction() {
-    document.getElementById("main-content").style.display = "none";
-}
-
-// Execute a function when the user releases a key on the keyboard
-document.getElementById("searchFieldValves").addEventListener("keyup", function(event) {
-    // Number 13 is the "Enter" key on the keyboard
-    if (event.keyCode === 13) {
-        searchValves()
-    }
-});
-
-// Execute a function when the user releases a key on the keyboard
-document.getElementById("searchFieldPhones").addEventListener("keyup", function(event) {
-    // Number 13 is the "Enter" key on the keyboard
-    if (event.keyCode === 13) {
-        searchPhones()
-    }
-});
-
-// Execute a function when the user releases a key on the keyboard
-document.getElementById("searchFieldBreakers").addEventListener("keyup", function(event) {
-    // Number 13 is the "Enter" key on the keyboard
-    if (event.keyCode === 13) {
-        searchBreakers()
-    }
-});
-
-// Execute a function when the user releases a key on the keyboard
-document.getElementById("login-password").addEventListener("keyup", function(event) {
-    // Number 13 is the "Enter" key on the keyboard
-    if (event.keyCode === 13) {
-        login()
-    }
-});
 
 // Show selected tab and hide inactive tabs
 function openTab(tabName) {
@@ -396,23 +359,6 @@ function searchBreakers() {
     breakerSelected()
 }
 
-// Call onload function
-window.onload = onLoadFunction();
-
-// Webapp install
-let deferredPrompt = null;
-document.getElementById('installPanel').style.display = 'none';
-
-window.addEventListener('beforeinstallprompt', (e) => {
-    console.log("[Main] A2HS Triggered")
-    // Prevent Chrome 67 and earlier from automatically showing the prompt
-    e.preventDefault();
-    // Stash the event so it can be triggered later.
-    deferredPrompt = e;
-    // Update UI to notify the user they can add to home screen
-    document.getElementById('installPanel').style.display = 'block';
-});
-
 async function install() {
     if (deferredPrompt) {
         // Hide our user interface that shows our A2HS button
@@ -433,3 +379,69 @@ async function install() {
         });
     }
 }
+
+// On load function
+async function onLoadFunction() {
+	
+    document.getElementById("main-content").style.display = "none";
+	
+	window.addEventListener('load', function() {
+		window.history.pushState({ noBackExitsApp: true }, openTab('Home'))
+	})
+
+	window.addEventListener('popstate', function(event) {
+	  if (event.state && event.state.noBackExitsApp) {
+			window.history.pushState({ noBackExitsApp: true }, openTab('Home'))
+	  }
+	})
+	
+	// Webapp install
+	let deferredPrompt = null;
+	document.getElementById('installPanel').style.display = 'none';
+
+	window.addEventListener('beforeinstallprompt', (e) => {
+		console.log("[Main] A2HS Triggered")
+		// Prevent Chrome 67 and earlier from automatically showing the prompt
+		e.preventDefault();
+		// Stash the event so it can be triggered later.
+		deferredPrompt = e;
+		// Update UI to notify the user they can add to home screen
+		document.getElementById('installPanel').style.display = 'block';
+	});
+	
+	// Execute a function when the user releases a key on the keyboard
+	document.getElementById("searchFieldValves").addEventListener("keyup", function(event) {
+		// Number 13 is the "Enter" key on the keyboard
+		if (event.keyCode === 13) {
+			searchValves()
+		}
+	});
+
+	// Execute a function when the user releases a key on the keyboard
+	document.getElementById("searchFieldPhones").addEventListener("keyup", function(event) {
+		// Number 13 is the "Enter" key on the keyboard
+		if (event.keyCode === 13) {
+			searchPhones()
+		}
+	});
+
+	// Execute a function when the user releases a key on the keyboard
+	document.getElementById("searchFieldBreakers").addEventListener("keyup", function(event) {
+		// Number 13 is the "Enter" key on the keyboard
+		if (event.keyCode === 13) {
+			searchBreakers()
+		}
+	});
+
+	// Execute a function when the user releases a key on the keyboard
+	document.getElementById("login-password").addEventListener("keyup", function(event) {
+		// Number 13 is the "Enter" key on the keyboard
+		if (event.keyCode === 13) {
+			login()
+		}
+	});
+	
+}
+
+// Call onload function
+window.onload = onLoadFunction();
