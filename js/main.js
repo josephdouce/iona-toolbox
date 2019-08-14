@@ -5,6 +5,7 @@ var ups = null;
 var breakers = null;
 var passphrase = null;
 var passphraseEncrypt = null;
+let deferredPrompt = null;
 
 var encryptedFiles = [
 	"encrypted_csv_files/phones_encrypted.csv",
@@ -396,7 +397,6 @@ async function onLoadFunction() {
 	})
 	
 	// Webapp install
-	let deferredPrompt = null;
 	document.getElementById('installPanel').style.display = 'none';
 
 	window.addEventListener('beforeinstallprompt', (e) => {
