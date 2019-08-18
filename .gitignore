@@ -39,3 +39,8 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/windows,visualstudiocode
+
+# Unencrypted data files
+
+/csv_files
+/csv_files/*

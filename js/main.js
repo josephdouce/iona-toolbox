@@ -15,13 +15,22 @@ var encryptedFiles = [
 	"encrypted_csv_files/ups_locations_encrypted.csv"
 ];
 
+function w3_open() {
+  document.getElementById("sideBar").style.display = "block";
+  console.log("open");
+}
+
+function w3_close() {
+  document.getElementById("sideBar").style.display = "none";
+}
+
 function sendMail() {
     var recipient = "josephdouce";
     var at = String.fromCharCode(64);
-    var dotcom = "gmail.com";
-    document.location.href = "mailto:" + recipient + at + dotcom + "?subject=" +
-        encodeURIComponent("QM2 Tools") +
-        "&body=" + encodeURIComponent("Sent from QM2 Tools");
+    var host = "gmail.com";
+    document.location.href = "mailto:" + recipient + at + host + "?subject=" +
+        encodeURIComponent("QM2 Tools Support: " + document.getElementById('senderName').value) +
+        "&body=" + encodeURIComponent(document.getElementById('mailBody').value);
 }
 
 

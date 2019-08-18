@@ -41,9 +41,21 @@
 
     <div id="login-page" class="w3-content w3-theme-l4 w3-padding-16" style="height:100vh">
 
-        <div class="w3-row-padding  w3-padding-16 w3-display-container" style="height:50vh">
+        <div class="w3-row-padding w3-padding-16 w3-display-container" style="height:50vh">
             <div class="w3-col s12 m4 l3 w3-display-bottommiddle">
-                <input id="login-password" type="password" name="password" placeholder="passphrase" class="w3-input w3-border" autofocus/>
+                <input id="login-username" type="username" name="username" placeholder="Username" list="usernames" class="w3-input w3-border" autofocus/>
+				<datalist id="usernames">
+					<option>Technical</option>
+					<option>Deck</option>
+					<option>Crew</option>
+					<option>Developer</option>
+				</datalist>
+            </div>
+        </div>
+
+        <div class="w3-row-padding w3-padding-16 w3-display-container" style="min-height:60px">
+            <div class="w3-col s12 m4 l3 w3-display-middle">
+                <input id="login-password" type="password" name="password" placeholder="Passphrase" class="w3-input w3-border"/>
             </div>
         </div>
 
@@ -59,17 +71,26 @@
 
     </div>
 
-    <div id="main-content" class="w3-content w3-theme-l4" style="min-height:100vh">
-
+    <div id="main-content" class="w3-content w3-theme-l4 w3-display-container" style="min-height:100vh">
+	
         <div class="w3-display-container w3-container w3-theme header" id="myHeader">
             <i class="mdi mdi-home w3-theme w3-display-topleft w3-xlarge" style="z-index:1; padding-top:10px; padding-left:10px;" onclick="openTab('Home')"></i>
-            <i class="mdi mdi-menu w3-theme w3-display-topright w3-xlarge" style="z-index:1; padding-top:10px; padding-right:10px;" onclick="openTab('Home')"></i>
+            <i class="mdi mdi-menu w3-theme w3-display-topright w3-xlarge" style="z-index:1; padding-top:10px; padding-right:10px;" onclick="w3_open()"></i>
             <div class="w3-center">
                 <h1 class="w3-xlarge w3-animate-bottom">QM2 Tools</h1>
             </div>
         </div>
+		
+		<div id="sideBar" class="w3-col l3 m4 s6 w3-bar-block w3-display-topright w3-theme-l5" style="z-index:1; display:none;">
+			<div class="w3-card w3-container w3-display-container w3-theme-l5">
+				<a href="#" class="w3-bar-item w3-button" onclick="w3_close()">Close</a>
+				<a href="#" class="w3-bar-item w3-button" onclick="openTab('About'); w3_close()">About</a>
+				<a href="#" class="w3-bar-item w3-button" onclick="openTab('Contact'); w3_close()">Contact<a>
+				<a href="#" class="w3-bar-item w3-button" onclick="openTab('Dev'); w3_close()">Dev Tools</a>
+			</div>
+		</div>
 
-        <div id="installPanel" class="w3-padding-16 add-panel w3-display-container w3-container w3-pale-green w3-leftbar w3-border-green">
+        <div id="installPanel" class="w3-padding-16 w3-display-container w3-container w3-pale-green w3-leftbar w3-border-green">
             <span onclick="this.parentElement.style.display='none'" class="w3-button w3-display-topright">X</span>
             <button class="w3-button w3-theme add-button" onclick="install()">Install</button>
         </div>
@@ -95,20 +116,6 @@
                 <div class="w3-card w3-container w3-display-container w3-theme-l5" style="padding-top: 100%;">
                     <i class="mdi mdi-flash-outline w3-margin-bottom w3-text-theme w3-hover-opacity w3-display-middle w3-jumbo" onclick="openTab('Electrical')"></i>
                     <p class="w3-text-theme w3-display-topmiddle">Electrical</p>
-                </div>
-            </div>
-
-            <div class="w3-col l3 m4 s6 w3-margin-bottom">
-                <div class="w3-card w3-container w3-display-container w3-theme-l5" style="padding-top: 100%;" onclick="openTab('About')">
-                    <i class="mdi mdi-caps-lock w3-margin-bottom w3-text-theme w3-hover-opacity w3-display-middle w3-jumbo"></i>
-                    <p class="w3-text-theme w3-display-topmiddle">About</p>
-                </div>
-            </div>
-
-            <div class="w3-col l3 m4 s6 w3-margin-bottom">
-                <div class="w3-card w3-container w3-display-container w3-theme-l5" style="padding-top: 100%;" onclick="openTab('Dev')">
-                    <i class="mdi mdi-wrench w3-margin-bottom w3-text-theme w3-hover-opacity w3-display-middle w3-jumbo"></i>
-                    <p class="w3-text-theme w3-display-topmiddle">Dev</p>
                 </div>
             </div>
 
@@ -144,7 +151,7 @@
         <div id="Valves" class="w3-container tabPage" style="display:none">
             <div class="w3-row-padding">
                 <div class="w3-col">
-                    <h2>Valves</h2>
+                    <h2 class="w3-text-theme">Valves</h2>
                 </div>
             </div>
 
@@ -180,7 +187,7 @@
         <div id="Phones" class="w3-container tabPage" style="display:none">
             <div class="w3-row-padding">
                 <div class="w3-col">
-                    <h2>Phones</h2>
+                    <h2 class="w3-text-theme">Phones</h2>
                 </div>
             </div>
 
@@ -216,7 +223,7 @@
         <div id="Breakers" class="w3-container tabPage" style="display:none">
             <div class="w3-row-padding">
                 <div class="w3-col">
-                    <h2>Breakers</h2>
+                    <h2 class="w3-text-theme">Breakers</h2>
                 </div>
             </div>
 
@@ -252,7 +259,7 @@
         <div id="ESD" class="w3-container tabPage" style="display:none">
             <div class="w3-row-padding">
                 <div class="w3-col">
-                    <h2>ESD Cabinets</h2>
+                    <h2 class="w3-text-theme">ESD Cabinets</h2>
                 </div>
             </div>
 			
@@ -275,7 +282,7 @@
         <div id="UPS" class="w3-container tabPage" style="display:none">
             <div class="w3-row-padding">
                 <div class="w3-col">
-                    <h2>UPS Locations</h2>
+                    <h2 class="w3-text-theme">UPS Locations</h2>
                 </div>
             </div>
 
@@ -298,7 +305,7 @@
         <div id="About" class="w3-container tabPage" style="display:none">
             <div class="w3-row-padding">
                 <div class="w3-col">
-                    <h2>About</h2>
+                    <h2 class="w3-text-theme">About</h2>
                     <p>QM2 Tools</p>
                     <p>Updated: 08-Aug-2019</p>
                     <p>Secured with AES Encryption</p>
@@ -313,13 +320,7 @@
 
             <div class="w3-row-padding">
                 <div class="w3-col">
-                    <h2>Dev Tools</h2>
-                </div>
-            </div>
-
-            <div class="w3-row-padding w3-padding-16">
-                <div class="w3-col">
-                    <button class="w3-button w3-theme" onclick="sendMail()">Suggest Update</button>
+                    <h2 class="w3-text-theme">Dev Tools</h2>
                 </div>
             </div>
 
@@ -353,6 +354,42 @@
                 </div>
             </div>
         </div>
+		
+		<!-- Contact Tab -->
+        <div id="Contact" class="w3-container tabPage" style="display:none">
+
+            <div class="w3-row-padding">
+                <div class="w3-col">
+                    <h2 class="w3-text-theme">Contact Us</h2>
+                </div>
+            </div>
+			
+			<div class="w3-row-padding w3-padding-16">
+				<div class="w3-col" style="width:50px">
+					<i class="w3-xxlarge mdi mdi-account w3-text-theme"></i>
+				</div>
+                <div class="w3-rest">
+                    <input id="senderName" type="text" name="senderName" placeholder="Name" class="w3-input w3-border"/>
+                </div>
+            </div>
+			
+			<div class="w3-row-padding w3-padding-16">
+				<div class="w3-col" style="width:50px">
+					<i class="w3-xxlarge mdi mdi-pencil w3-text-theme"></i>
+				</div>
+                <div class="w3-rest">
+                    <textarea id="mailBody" type="text" name="mailBody" placeholder="Message" class="w3-input w3-border"/></textarea>
+                </div>
+            </div>
+
+            <div class="w3-row-padding w3-padding-16">
+                <div class="w3-col l3 m4 s12">
+                    <button class="w3-button w3-theme w3-block" onclick="sendMail()">Send</button>
+                </div>
+            </div>
+			
+        </div>
+		
     </div>
 
     <!-- Boilerplate Scripts -->
