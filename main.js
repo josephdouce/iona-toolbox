@@ -20,8 +20,8 @@ function sendMail() {
     var at = String.fromCharCode(64);
     var dotcom = "gmail.com";
     document.location.href = "mailto:" + recipient + at + dotcom + "?subject=" +
-        encodeURIComponent("QM2 Tools") +
-        "&body=" + encodeURIComponent("Sent from QM2 Tools");
+        encodeURIComponent("Iona Toolbox") +
+        "&body=" + encodeURIComponent("Sent from Iona Toolbox");
 }
 
 

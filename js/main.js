@@ -77,6 +77,7 @@ function decryptFile() {
 function login() {
 
     passphrase = document.getElementById('login-password').value;
+    username = document.getElementById('login-username').value;
 
     // Valves 
 
