@@ -19,7 +19,7 @@ var menuStructure = {
         },
         {
           label: "Engine",
-          icon: "mdi-phone",
+          icon: "mdi-engine",
           sub: [{
             label: "Sensors",
             icon: "mdi-thermometer",
