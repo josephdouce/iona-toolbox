@@ -1,8 +1,6 @@
 var valves = null;
 var phones = null;
-var esd = null;
-var ups = null;
-var breakers = null;
+var sensors = null;
 var passphrase = null;
 var passphraseEncrypt = null;
 let deferredPrompt = null;
@@ -48,7 +46,6 @@ var menuStructure = {
 
 function menuBuilder(parent) {
   for (var y in parent.sub) {
-    console.log(parent.sub[y]);
     var p, newElement, newElement3, newElement3, newElement4;
     var sub = parent.sub[y];
 
@@ -91,7 +88,6 @@ function menuBuilder(parent) {
 
 function w3_open() {
   document.getElementById("sideBar").style.display = "block";
-  console.log("open");
 }
 
 function w3_close() {
@@ -103,7 +99,7 @@ function sendMail() {
   var at = String.fromCharCode(64);
   var host = "gmail.com";
   document.location.href = "mailto:" + recipient + at + host + "?subject=" +
-    encodeURIComponent("QM2 Tools Support: " + document.getElementById('senderName').value) +
+    encodeURIComponent("Iona Toolbox Support: " + document.getElementById('senderName').value) +
     "&body=" + encodeURIComponent(document.getElementById('mailBody').value);
 }
 

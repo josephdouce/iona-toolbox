@@ -109,99 +109,96 @@
 
     </div>
 
-  </div>
 
-  <!-- About Tab -->
-  <div id="About" class="w3-container tabPage" style="display:none">
-    <div class="w3-row-padding">
-      <div class="w3-col">
-        <h2 class="w3-text-theme">About</h2>
-        <p>Iona Toolbox</p>
-        <p>Updated: 08-Aug-2019</p>
-        <p>Secured with AES Encryption</p>
-        <p><a href="https://josephdouce.github.io/iona-toolbox">https://josephdouce.github.io/iona-toolbox</a></p>
-        <p>© Joseph Douce 2019</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Dev Tab -->
-  <div id="Dev" class="w3-container tabPage" style="display:none">
-
-    <div class="w3-row-padding">
-      <div class="w3-col">
-        <h2 class="w3-text-theme">Dev Tools</h2>
+    <!-- About Tab -->
+    <div id="About" class="w3-container tabPage" style="display:none">
+      <div class="w3-row-padding">
+        <div class="w3-col">
+          <h2 class="w3-text-theme">About</h2>
+          <p>Iona Toolbox</p>
+          <p>Updated: 08-Aug-2019</p>
+          <p>Secured with AES Encryption</p>
+          <p><a href="https://josephdouce.github.io/iona-toolbox">https://josephdouce.github.io/iona-toolbox</a></p>
+          <p>© Joseph Douce 2019</p>
+        </div>
       </div>
     </div>
 
-    <div class="w3-row-padding">
-      <div class="w3-col">
-        <label>Select File to Encrypt</label>
-        <input type="file" id="inputFile" name="avatar" accept=".csv" class="w3-input w3-theme">
+    <!-- Dev Tab -->
+    <div id="Dev" class="w3-container tabPage" style="display:none">
 
+      <div class="w3-row-padding">
+        <div class="w3-col">
+          <h2 class="w3-text-theme">Dev Tools</h2>
+        </div>
+      </div>
+
+      <div class="w3-row-padding">
+        <div class="w3-col">
+          <label>Select File to Encrypt</label>
+          <input type="file" id="inputFile" name="avatar" accept=".csv" class="w3-input w3-theme">
+
+        </div>
+      </div>
+
+      <div class="w3-row-padding w3-padding-16">
+        <div class="w3-col">
+          <label>Enter passphrase to use for Encryption</label>
+          <input id="encrypt-password" type="password" name="encrypt-password" placeholder="passphrase"
+            class="w3-input w3-border" autofocus />
+        </div>
+      </div>
+
+      <div class="w3-row-padding">
+        <div class="w3-col l3 m4 s6">
+          <button class="w3-button w3-theme" onclick="encryptFile()">Encrypt</button>
+        </div>
+        <div class="w3-col l3 m4 s6">
+          <button class="w3-button w3-theme" onclick="decryptFile()">Decrypt</button>
+        </div>
+      </div>
+
+      <div class="w3-row-padding">
+        <div class="w3-col">
+          <p id="encrypt-display" class="w3-code">File data will be displayed here</p>
+        </div>
       </div>
     </div>
 
-    <div class="w3-row-padding w3-padding-16">
-      <div class="w3-col">
-        <label>Enter passphrase to use for Encryption</label>
-        <input id="encrypt-password" type="password" name="encrypt-password" placeholder="passphrase"
-          class="w3-input w3-border" autofocus />
+    <!-- Contact Tab -->
+    <div id="Contact" class="w3-container tabPage" style="display:none">
+
+      <div class="w3-row-padding">
+        <div class="w3-col">
+          <h2 class="w3-text-theme">Contact Us</h2>
+        </div>
+      </div>
+
+      <div class="w3-row-padding w3-padding-16">
+        <div class="w3-col" style="width:50px">
+          <i class="w3-xxlarge mdi mdi-account w3-text-theme"></i>
+        </div>
+        <div class="w3-rest">
+          <input id="senderName" type="text" name="senderName" placeholder="Name" class="w3-input w3-border" />
+        </div>
+      </div>
+
+      <div class="w3-row-padding w3-padding-16">
+        <div class="w3-col" style="width:50px">
+          <i class="w3-xxlarge mdi mdi-pencil w3-text-theme"></i>
+        </div>
+        <div class="w3-rest">
+          <textarea id="mailBody" type="text" name="mailBody" placeholder="Message"
+            class="w3-input w3-border" /></textarea>
+        </div>
+      </div>
+
+      <div class="w3-row-padding w3-padding-16">
+        <div class="w3-col l3 m4 s12">
+          <button class="w3-button w3-theme w3-block" onclick="sendMail()">Send</button>
+        </div>
       </div>
     </div>
-
-    <div class="w3-row-padding">
-      <div class="w3-col l3 m4 s6">
-        <button class="w3-button w3-theme" onclick="encryptFile()">Encrypt</button>
-      </div>
-      <div class="w3-col l3 m4 s6">
-        <button class="w3-button w3-theme" onclick="decryptFile()">Decrypt</button>
-      </div>
-    </div>
-
-    <div class="w3-row-padding">
-      <div class="w3-col">
-        <p id="encrypt-display" class="w3-code">File data will be displayed here</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Contact Tab -->
-  <div id="Contact" class="w3-container tabPage" style="display:none">
-
-    <div class="w3-row-padding">
-      <div class="w3-col">
-        <h2 class="w3-text-theme">Contact Us</h2>
-      </div>
-    </div>
-
-    <div class="w3-row-padding w3-padding-16">
-      <div class="w3-col" style="width:50px">
-        <i class="w3-xxlarge mdi mdi-account w3-text-theme"></i>
-      </div>
-      <div class="w3-rest">
-        <input id="senderName" type="text" name="senderName" placeholder="Name" class="w3-input w3-border" />
-      </div>
-    </div>
-
-    <div class="w3-row-padding w3-padding-16">
-      <div class="w3-col" style="width:50px">
-        <i class="w3-xxlarge mdi mdi-pencil w3-text-theme"></i>
-      </div>
-      <div class="w3-rest">
-        <textarea id="mailBody" type="text" name="mailBody" placeholder="Message"
-          class="w3-input w3-border" /></textarea>
-      </div>
-    </div>
-
-    <div class="w3-row-padding w3-padding-16">
-      <div class="w3-col l3 m4 s12">
-        <button class="w3-button w3-theme w3-block" onclick="sendMail()">Send</button>
-      </div>
-    </div>
-
-  </div>
-
   </div>
 
   <!-- Boilerplate Scripts -->

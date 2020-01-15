@@ -2,26 +2,7 @@
 
 const CACHE = "pwabuilder-precache";
 const precacheFiles = [
-  "/iona-toolbox/",
-  "/iona-toolbox/css/main.css",
-  "/iona-toolbox/css/normalize.css",
-  "/iona-toolbox/css/w3-theme-blue.css",
-  "/iona-toolbox/css/w3.css",
-  "/iona-toolbox/favicon.png",
-  "/iona-toolbox/icon.png",
-  "/iona-toolbox/index.html",
-  "/iona-toolbox/js/main.js",
-  "/iona-toolbox/js/plugins.js",
-  "/iona-toolbox/js/vendor/papaparse.js",
-  "/iona-toolbox/js/vendor/crypto-js.min.js",
-  "/iona-toolbox/js/vendor/jquery-3.3.1.min.js",
-  "/iona-toolbox/js/vendor/modernizr-3.6.0.min.js",
-  "/iona-toolbox/site.json",
-  "/iona-toolbox/encrypted_csv_files/valves_encrypted.csv",
-  "/iona-toolbox/encrypted_csv_files/phones_encrypted.csv",
-  "/iona-toolbox/encrypted_csv_files/breakers_encrypted.csv",
-  "/iona-toolbox/encrypted_csv_files/esd_cabinets_encrypted.csv",
-  "/iona-toolbox/encrypted_csv_files/ups_locations_encrypted.csv"
+  "/iona-toolbox/index.html"
 ];
 
 self.addEventListener("install", function (event) {

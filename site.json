@@ -13,7 +13,7 @@
   }
   ],
   "display": "standalone",
-  "start_url": "/qm2-tools-webapp/index.html",
+  "start_url": "/iona-toolbox/index.html",
   "background_color": "#fafafa",
   "theme_color": "#fafafa"
 }
