@@ -11,10 +11,10 @@ var menuStructure = {
   label: "Home",
   sub: [{
       label: "Mechanical",
-      icon: "mdi-phone",
+      icon: "mdi-wrench",
       sub: [{
           label: "Valves",
-          icon: "mdi-phone",
+          icon: "mdi-reflect-vertical mdi-rotate-90",
           sub: null
         },
         {
@@ -22,7 +22,7 @@ var menuStructure = {
           icon: "mdi-phone",
           sub: [{
             label: "Sensors",
-            icon: "mdi-phone",
+            icon: "mdi-thermometer",
             sub: null
           }]
         }
@@ -30,15 +30,15 @@ var menuStructure = {
     },
     {
       label: "Electrical",
-      icon: "mdi-phone",
+      icon: "mdi-flash",
       sub: null
     },
     {
       label: "Hotel",
-      icon: "mdi-phone",
+      icon: "mdi-toilet",
       sub: [{
         label: "Phone",
-        icon: "mdi-phone",
+        icon: "mdi-phone mdi-rotate-90",
         sub: null
       }]
     },
@@ -64,7 +64,7 @@ function menuBuilder(parent) {
     newElement2.setAttribute('style', "padding-top: 100%");
     newElement2.setAttribute('onclick', "openTab('" + sub["label"] + "')");
 
-    newElement3.setAttribute('class', "mdi " + sub["icon"] + " mdi-rotate-90 w3-margin-bottom w3-text-theme w3-hover-opacity w3-display-middle w3-jumbo");
+    newElement3.setAttribute('class', "mdi " + sub["icon"] + " w3-margin-bottom w3-text-theme w3-hover-opacity w3-display-middle w3-jumbo");
 
     newElement4.setAttribute('class', "w3-text-theme w3-display-topmiddle");
     newElement4.innerHTML = sub["label"];
