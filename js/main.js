@@ -1,4 +1,5 @@
 var elec_isolations = null;
+var valves = null;
 var passphrase = null;
 var passphraseEncrypt = null;
 let deferredPrompt = null;
@@ -168,7 +169,7 @@ function login() {
                   }
                   $("#isolationsSearchInput").keypress(function(event) { 
                     if (event.keyCode === 13) { 
-                      isolationsSearch();
+                      isolationSearch();
                     } 
                   }); 
                   isolationSelected()
@@ -178,6 +179,41 @@ function login() {
               }
           });
       });
+
+      // Fetch encrypted .csv file and process is with papa
+  fetch('encrypted_csv_files/hydraulic_valves_encrypted.csv')
+  .then(response => response.text())
+  .then((data) => {
+      // Decrypt
+      var bytes = CryptoJS.AES.decrypt(data, passphrase);
+      try {
+          var originalText = bytes.toString(CryptoJS.enc.Utf8);
+      } catch (err) {
+          document.getElementById('passwordPanel').style.display = "block";
+          return;
+      }
+
+      // Parse decrypted data and phones valves variable 
+      Papa.parse(originalText, {
+          header: true,
+          complete: function(results) {
+              pageBuilder ("Valves", "selectValve", "valveSelected()", "displayDataValve", "valveSearchInput");
+              valves = results;
+              for (i = 0; i < valves.data.length; i++) {
+                  var option = document.createElement('option');
+                  option.text = valves.data[i]["Id"]
+                  option.value = valves.data[i]["Id"];
+                  document.getElementById("selectValve").add(option);
+              }
+              $("#valveSearchInput").keypress(function(event) { 
+                if (event.keyCode === 13) { 
+                  valveSearch();
+                } 
+              }); 
+              valveSelected()
+          }
+      });
+  });
 
 }
 
@@ -239,7 +275,40 @@ function pageBuilder (tab, selectId, selectFunction, displayId, searchInputId){
   p.appendChild(newElement);
 }
 
-function isolationsSearch() {
+function valveSelected(){
+  var input = document.getElementById("selectValve").value;
+  document.getElementById("displayDataValve").innerHTML = "";
+  for (i = 0; i < valves.data.length; i++) {
+      if (input == valves.data[i]["Id"]) {
+          for (var label in valves.data[i]) {
+              if(label != "Id"){
+                  document.getElementById("displayDataValve").innerHTML += label;
+                  document.getElementById("displayDataValve").innerHTML += ": ";
+                  document.getElementById("displayDataValve").innerHTML += valves.data[i][label];
+                  document.getElementById("displayDataValve").innerHTML += "<br>";
+                  document.getElementById("displayDataValve").innerHTML += "<br>";
+              }
+          }
+      }
+  }
+}
+function valveSearch(){
+  var input = document.getElementById("valveSearchInput").value;
+  document.getElementById("selectValve").innerText = null;
+  for (i = 0; i < valves.data.length; i++) {
+      var search_term = input;
+      var search_in = valves.data[i]["Id"];
+      if (search_in.toLowerCase().includes(search_term.toLowerCase())) {
+          var option = document.createElement('option');
+          option.text = valves.data[i]["Id"];
+          option.value = valves.data[i]["Id"];
+          document.getElementById("selectValve").add(option);
+      }
+  }
+  valveSelected()
+}
+
+function isolationSearch() {
   var input = document.getElementById("isolationsSearchInput").value;
   document.getElementById("selectIsolation").innerText = null;
   for (i = 0; i < elec_isolations.data.length; i++) {
