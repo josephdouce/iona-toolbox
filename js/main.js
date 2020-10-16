@@ -1,6 +1,4 @@
-var valves = null;
-var phones = null;
-var sensors = null;
+var elec_isolations = null;
 var passphrase = null;
 var passphraseEncrypt = null;
 let deferredPrompt = null;
@@ -29,19 +27,12 @@ var menuStructure = {
     {
       label: "Electrical",
       icon: "mdi-flash",
-      sub: null
-    },
-    {
-      label: "Hotel",
-      icon: "mdi-toilet",
       sub: [{
-        label: "Phone",
-        icon: "mdi-phone mdi-rotate-90",
+        label: "Isolations",
+        icon: "mdi-flash",
         sub: null
       }]
-    },
-  ]
-
+    }]
 }
 
 function menuBuilder(parent) {
@@ -147,12 +138,140 @@ function decryptFile() {
 function login() {
 
   passphrase = document.getElementById('login-password').value;
-  username = document.getElementById('login-username').value;
 
-  document.getElementById("login-page").style.display = "none";
-  document.getElementById('passwordPanel').style.display = "none";
-  document.getElementById("main-content").style.display = "block";
+  // Electrical Isolations
 
+  // Fetch encrypted .csv file and process is with papa
+  fetch('encrypted_csv_files/electrical_isolation_list_encrypted.csv')
+      .then(response => response.text())
+      .then((data) => {
+          // Decrypt
+          var bytes = CryptoJS.AES.decrypt(data, passphrase);
+          try {
+              var originalText = bytes.toString(CryptoJS.enc.Utf8);
+          } catch (err) {
+              document.getElementById('passwordPanel').style.display = "block";
+              return;
+          }
+
+          // Parse decrypted data and phones valves variable 
+          Papa.parse(originalText, {
+              header: true,
+              complete: function(results) {
+                  pageBuilder ("Isolations", "selectIsolation", "isolationSelected()", "displayDataElecIsolations", "isolationsSearchInput");
+                  elec_isolations = results;
+                  for (i = 0; i < elec_isolations.data.length; i++) {
+                      var option = document.createElement('option');
+                      option.text = elec_isolations.data[i]["Name"] + " D" + elec_isolations.data[i]["Deck"] + "Z" + elec_isolations.data[i]["Zone"]
+                      option.value = elec_isolations.data[i]["Id"];
+                      document.getElementById("selectIsolation").add(option);
+                  }
+                  $("#isolationsSearchInput").keypress(function(event) { 
+                    if (event.keyCode === 13) { 
+                      isolationsSearch();
+                    } 
+                  }); 
+                  isolationSelected()
+                  document.getElementById("login-page").style.display = "none";
+                  document.getElementById('passwordPanel').style.display = "none";
+                  document.getElementById("main-content").style.display = "block";
+              }
+          });
+      });
+
+}
+
+// build UI for each page
+
+function pageBuilder (tab, selectId, selectFunction, displayId, searchInputId){
+
+  // search box
+  p = document.getElementById(tab);
+  newElement = document.createElement("div");
+  newElement2 = document.createElement("div");
+  newElement3 = document.createElement("input");
+
+  newElement.setAttribute('class', "w3-row-padding");
+  newElement2.setAttribute('class', "w3-col s12 m4 l4");
+  newElement3.setAttribute('class', "w3-input w3-border");
+  newElement3.setAttribute('placeholder', "Search");
+  newElement3.setAttribute('type', "text");
+  newElement3.setAttribute('id', searchInputId);
+
+  newElement.appendChild(newElement2);
+  newElement2.appendChild(newElement3);
+  
+  p.appendChild(newElement);
+
+  // select box
+  p = document.getElementById(tab);
+  newElement = document.createElement("div");
+  newElement2 = document.createElement("div");
+  newElement3 = document.createElement("label");
+  newElement4 = document.createElement("select");
+
+  newElement.setAttribute('class', "w3-row-padding");
+  newElement2.setAttribute('class', "w3-col s12 m4 l4");
+  newElement3.innerHTML = "Select Equipment";
+  newElement4.setAttribute('class', "w3-select w3-border");
+  newElement4.setAttribute('id', selectId);
+  newElement4.setAttribute('onchange', selectFunction);
+
+  newElement.appendChild(newElement2);
+  newElement2.appendChild(newElement3);
+  newElement2.appendChild(newElement4);
+
+  p.appendChild(newElement);
+
+  // data view
+  newElement = document.createElement("div");
+  newElement2 = document.createElement("div");
+  newElement4 = document.createElement("p");
+  
+  newElement.setAttribute('class', "w3-row-padding");
+  newElement2.setAttribute('class', "w3-col s12 m12 l12");
+  newElement3.setAttribute('id', displayId);
+  newElement3.setAttribute('class', "data-display w3-col s12 m12 l12");
+
+  newElement.appendChild(newElement2);
+  newElement2.appendChild(newElement3);
+
+  p.appendChild(newElement);
+}
+
+function isolationsSearch() {
+  var input = document.getElementById("isolationsSearchInput").value;
+  document.getElementById("selectIsolation").innerText = null;
+  for (i = 0; i < elec_isolations.data.length; i++) {
+      var search_term = input;
+      var search_in = elec_isolations.data[i]["Name"] + " D" + elec_isolations.data[i]["Deck"] + "Z" + elec_isolations.data[i]["Zone"];
+      if (search_in.toLowerCase().includes(search_term.toLowerCase())) {
+          var option = document.createElement('option');
+          option.text = elec_isolations.data[i]["Name"] + "  D" + elec_isolations.data[i]["Deck"] + "Z" + elec_isolations.data[i]["Zone"];
+          option.value = elec_isolations.data[i]["Id"];
+          document.getElementById("selectIsolation").add(option);
+      }
+  }
+  isolationSelected()
+}
+
+// Get valve data for selected valve and display it
+function isolationSelected() {
+  var input = document.getElementById("selectIsolation").value;
+  document.getElementById("displayDataElecIsolations").innerHTML = "";
+  for (i = 0; i < elec_isolations.data.length; i++) {
+      if (input == elec_isolations.data[i]["Id"]) {
+          for (var label in elec_isolations.data[i]) {
+              if(label != "Id"){
+                  document.getElementById("displayDataElecIsolations").innerHTML += label;
+                  document.getElementById("displayDataElecIsolations").innerHTML += ": ";
+                  document.getElementById("displayDataElecIsolations").innerHTML += elec_isolations.data[i][label];
+                  document.getElementById("displayDataElecIsolations").innerHTML += "<br>";
+                  document.getElementById("displayDataElecIsolations").innerHTML += "<br>";
+              }
+          }
+      }
+  }
 }
 
 // Show selected tab and hide inactive tabs
