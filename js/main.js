@@ -1,5 +1,7 @@
-var elec_isolations = null;
+var elecIsolations = null;
 var valves = null;
+var sensors = null;
+var emergencyStations = null;
 var passphrase = null;
 var passphraseEncrypt = null;
 let deferredPrompt = null;
@@ -33,7 +35,17 @@ var menuStructure = {
         icon: "mdi-flash",
         sub: null
       }]
-    }]
+    },
+    {
+      label: "Safety",
+      icon: "mdi-safety-goggles",
+      sub: [{
+        label: "Emergency Stations",
+        icon: "mdi-bullhorn",
+        sub: null
+      }]
+    }
+  ],
 }
 
 function menuBuilder(parent) {
@@ -98,13 +110,11 @@ function sendMail() {
 
 //Encrypt the selected file and display the data
 function encryptFile() {
-  var preview = document.getElementById('encrypt-display');
   var file = document.querySelector('input[type=file]').files[0];
   var reader = new FileReader()
 
   reader.onload = function (event) {
-    passphraseEncrypt = document.getElementById('encrypt-password').value;
-    var ciphertext = CryptoJS.AES.encrypt(event.target.result, passphraseEncrypt).toString();
+    var ciphertext = CryptoJS.AES.encrypt(event.target.result, passphrase).toString();
     document.getElementById("encrypt-display").innerHTML = ciphertext;
   }
 
@@ -117,13 +127,12 @@ function encryptFile() {
 
 //Encrypt the selected file and display the data
 function decryptFile() {
-  var preview = document.getElementById('encrypt-display');
+
   var file = document.querySelector('input[type=file]').files[0];
   var reader = new FileReader()
 
   reader.onload = function (event) {
-    passphraseEncrypt = document.getElementById('encrypt-password').value;
-    var bytes = CryptoJS.AES.decrypt(event.target.result, passphraseEncrypt);
+    var bytes = CryptoJS.AES.decrypt(event.target.result, passphrase);
     var originalText = bytes.toString(CryptoJS.enc.Utf8);
     document.getElementById("encrypt-display").innerHTML = originalText;
   }
@@ -140,86 +149,87 @@ function login() {
 
   passphrase = document.getElementById('login-password').value;
 
-  // Electrical Isolations
+  processFile('encrypted_csv_files/electrical_isolation_list_encrypted.csv', 
+                  "Isolations", 
+                  "selectIsolation", 
+                  "displayDataElecIsolations", 
+                  "isolationsSearchInput", 
+                  elecIsolations);
 
-  // Fetch encrypted .csv file and process is with papa
-  fetch('encrypted_csv_files/electrical_isolation_list_encrypted.csv')
-      .then(response => response.text())
-      .then((data) => {
-          // Decrypt
-          var bytes = CryptoJS.AES.decrypt(data, passphrase);
-          try {
-              var originalText = bytes.toString(CryptoJS.enc.Utf8);
-          } catch (err) {
-              document.getElementById('passwordPanel').style.display = "block";
-              return;
-          }
+  processFile('encrypted_csv_files/emergency_stations_encrypted.csv', 
+                  "Emergency Stations", 
+                  "selectEmergencyStation", 
+                  "displayDataEmergencyStations", 
+                  "emergencyStationsSearchInput", 
+                  emergencyStations);
 
-          // Parse decrypted data and phones valves variable 
-          Papa.parse(originalText, {
-              header: true,
-              complete: function(results) {
-                  pageBuilder ("Isolations", "selectIsolation", "isolationSelected()", "displayDataElecIsolations", "isolationsSearchInput");
-                  elec_isolations = results;
-                  for (i = 0; i < elec_isolations.data.length; i++) {
-                      var option = document.createElement('option');
-                      option.text = elec_isolations.data[i]["Name"] + " D" + elec_isolations.data[i]["Deck"] + "Z" + elec_isolations.data[i]["Zone"]
-                      option.value = elec_isolations.data[i]["Id"];
-                      document.getElementById("selectIsolation").add(option);
-                  }
-                  $("#isolationsSearchInput").keypress(function(event) { 
-                    if (event.keyCode === 13) { 
-                      isolationSearch();
-                    } 
-                  }); 
-                  isolationSelected()
-                  document.getElementById("login-page").style.display = "none";
-                  document.getElementById('passwordPanel').style.display = "none";
-                  document.getElementById("main-content").style.display = "block";
-              }
-          });
-      });
-
+  processFile('encrypted_csv_files/hydraulic_valves_encrypted.csv', 
+                  "Valves", 
+                  "selectValve", 
+                  "displayDataValve", 
+                  "valveSearchInput", 
+                  valves);
       // Fetch encrypted .csv file and process is with papa
-  fetch('encrypted_csv_files/hydraulic_valves_encrypted.csv')
-  .then(response => response.text())
-  .then((data) => {
-      // Decrypt
-      var bytes = CryptoJS.AES.decrypt(data, passphrase);
-      try {
-          var originalText = bytes.toString(CryptoJS.enc.Utf8);
-      } catch (err) {
-          document.getElementById('passwordPanel').style.display = "block";
-          return;
-      }
 
-      // Parse decrypted data and phones valves variable 
-      Papa.parse(originalText, {
-          header: true,
-          complete: function(results) {
-              pageBuilder ("Valves", "selectValve", "valveSelected()", "displayDataValve", "valveSearchInput");
-              valves = results;
-              for (i = 0; i < valves.data.length; i++) {
-                  var option = document.createElement('option');
-                  option.text = valves.data[i]["Id"]
-                  option.value = valves.data[i]["Id"];
-                  document.getElementById("selectValve").add(option);
-              }
-              $("#valveSearchInput").keypress(function(event) { 
-                if (event.keyCode === 13) { 
-                  valveSearch();
-                } 
-              }); 
-              valveSelected()
-          }
-      });
-  });
+      processFile('encrypted_csv_files/hydraulic_valves_encrypted.csv', 
+      "Sensors", 
+      "selectSensor", 
+      "displayDataSensors", 
+      "sensorsSearchInput", 
+      valves);
+// Fetch encrypted .csv file and process is with papa
 
+}
+
+function processFile(filePath, tab, selectId, displayId, searchInputId, dataSource) {
+// Fetch encrypted .csv file and process is with papa
+fetch(filePath)
+.then(response => response.text())
+.then((data) => {
+    // Decrypt
+    var bytes = CryptoJS.AES.decrypt(data, passphrase);
+    try {
+        var originalText = bytes.toString(CryptoJS.enc.Utf8);
+    } catch (err) {
+        document.getElementById('passwordPanel').style.display = "block";
+        return;
+    }
+
+    // Parse decrypted data and phones valves variable 
+    Papa.parse(originalText, {
+        header: true,
+        complete: function(results) {
+            dataSource = results;
+            pageBuilder (tab, selectId, displayId, searchInputId);
+            for (i = 0; i < dataSource.data.length; i++) {
+                var option = document.createElement('option');
+                option.text = dataSource.data[i]["Display Name"];
+                option.value = dataSource.data[i]["Id"];
+                document.getElementById(selectId).add(option);
+            }
+            $('#'+searchInputId).keypress(function(event) { 
+              if (event.keyCode === 13) { 
+                searchData(document.getElementById(searchInputId).value,dataSource,selectId);
+                dropdownSelected(selectId, displayId, dataSource);
+              } 
+            }); 
+            $('#'+selectId).change(function(event) {
+              if (event) {
+              dropdownSelected(selectId, displayId, dataSource);
+              }             
+           }); 
+            dropdownSelected(selectId, displayId, dataSource);
+            document.getElementById("login-page").style.display = "none";
+            document.getElementById('passwordPanel').style.display = "none";
+            document.getElementById("main-content").style.display = "block";
+        }
+    });
+});  
 }
 
 // build UI for each page
 
-function pageBuilder (tab, selectId, selectFunction, displayId, searchInputId){
+function pageBuilder (tab, selectId, displayId, searchInputId){
 
   // search box
   p = document.getElementById(tab);
@@ -229,7 +239,7 @@ function pageBuilder (tab, selectId, selectFunction, displayId, searchInputId){
 
   newElement.setAttribute('class', "w3-row-padding");
   newElement2.setAttribute('class', "w3-col s12 m4 l4");
-  newElement3.setAttribute('class', "w3-input w3-border");
+  newElement3.setAttribute('class', "w3-input w3-border w3-margin-top");
   newElement3.setAttribute('placeholder', "Search");
   newElement3.setAttribute('type', "text");
   newElement3.setAttribute('id', searchInputId);
@@ -249,9 +259,8 @@ function pageBuilder (tab, selectId, selectFunction, displayId, searchInputId){
   newElement.setAttribute('class', "w3-row-padding");
   newElement2.setAttribute('class', "w3-col s12 m4 l4");
   newElement3.innerHTML = "Select Equipment";
-  newElement4.setAttribute('class', "w3-select w3-border");
+  newElement4.setAttribute('class', "w3-select w3-border w3-margin-top");
   newElement4.setAttribute('id', selectId);
-  newElement4.setAttribute('onchange', selectFunction);
 
   newElement.appendChild(newElement2);
   newElement2.appendChild(newElement3);
@@ -267,7 +276,7 @@ function pageBuilder (tab, selectId, selectFunction, displayId, searchInputId){
   newElement.setAttribute('class', "w3-row-padding");
   newElement2.setAttribute('class', "w3-col s12 m12 l12");
   newElement3.setAttribute('id', displayId);
-  newElement3.setAttribute('class', "data-display w3-col s12 m12 l12");
+  newElement3.setAttribute('class', "data-display w3-col s12 m12 l12 w3-margin-top");
 
   newElement.appendChild(newElement2);
   newElement2.appendChild(newElement3);
@@ -275,68 +284,30 @@ function pageBuilder (tab, selectId, selectFunction, displayId, searchInputId){
   p.appendChild(newElement);
 }
 
-function valveSelected(){
-  var input = document.getElementById("selectValve").value;
-  document.getElementById("displayDataValve").innerHTML = "";
-  for (i = 0; i < valves.data.length; i++) {
-      if (input == valves.data[i]["Id"]) {
-          for (var label in valves.data[i]) {
-              if(label != "Id"){
-                  document.getElementById("displayDataValve").innerHTML += label;
-                  document.getElementById("displayDataValve").innerHTML += ": ";
-                  document.getElementById("displayDataValve").innerHTML += valves.data[i][label];
-                  document.getElementById("displayDataValve").innerHTML += "<br>";
-                  document.getElementById("displayDataValve").innerHTML += "<br>";
-              }
-          }
-      }
-  }
-}
-function valveSearch(){
-  var input = document.getElementById("valveSearchInput").value;
-  document.getElementById("selectValve").innerText = null;
-  for (i = 0; i < valves.data.length; i++) {
-      var search_term = input;
-      var search_in = valves.data[i]["Id"];
-      if (search_in.toLowerCase().includes(search_term.toLowerCase())) {
+function searchData(searchTerm, dataSource, outputDropdown){
+  document.getElementById(outputDropdown).innerText = null;
+  for (i = 0; i < dataSource.data.length; i++) {
+      if (dataSource.data[i]["Display Name"].toLowerCase().includes(searchTerm.toLowerCase())) {
           var option = document.createElement('option');
-          option.text = valves.data[i]["Id"];
-          option.value = valves.data[i]["Id"];
-          document.getElementById("selectValve").add(option);
+          option.text = dataSource.data[i]["Display Name"];
+          option.value = dataSource.data[i]["Id"];
+          document.getElementById(outputDropdown).add(option);
       }
   }
-  valveSelected()
 }
 
-function isolationSearch() {
-  var input = document.getElementById("isolationsSearchInput").value;
-  document.getElementById("selectIsolation").innerText = null;
-  for (i = 0; i < elec_isolations.data.length; i++) {
-      var search_term = input;
-      var search_in = elec_isolations.data[i]["Name"] + " D" + elec_isolations.data[i]["Deck"] + "Z" + elec_isolations.data[i]["Zone"];
-      if (search_in.toLowerCase().includes(search_term.toLowerCase())) {
-          var option = document.createElement('option');
-          option.text = elec_isolations.data[i]["Name"] + "  D" + elec_isolations.data[i]["Deck"] + "Z" + elec_isolations.data[i]["Zone"];
-          option.value = elec_isolations.data[i]["Id"];
-          document.getElementById("selectIsolation").add(option);
-      }
-  }
-  isolationSelected()
-}
-
-// Get valve data for selected valve and display it
-function isolationSelected() {
-  var input = document.getElementById("selectIsolation").value;
-  document.getElementById("displayDataElecIsolations").innerHTML = "";
-  for (i = 0; i < elec_isolations.data.length; i++) {
-      if (input == elec_isolations.data[i]["Id"]) {
-          for (var label in elec_isolations.data[i]) {
-              if(label != "Id"){
-                  document.getElementById("displayDataElecIsolations").innerHTML += label;
-                  document.getElementById("displayDataElecIsolations").innerHTML += ": ";
-                  document.getElementById("displayDataElecIsolations").innerHTML += elec_isolations.data[i][label];
-                  document.getElementById("displayDataElecIsolations").innerHTML += "<br>";
-                  document.getElementById("displayDataElecIsolations").innerHTML += "<br>";
+function dropdownSelected(selectInput, displayOutput, dataSource){
+  var input = document.getElementById(selectInput).value;
+  document.getElementById(displayOutput).innerHTML = "";
+  for (i = 0; i < dataSource.data.length; i++) {
+      if (input == dataSource.data[i]["Id"]) {
+          for (var label in dataSource.data[i]) {
+              if(label != "Id" && label != "Display Name"){
+                  document.getElementById(displayOutput).innerHTML += label;
+                  document.getElementById(displayOutput).innerHTML += ": ";
+                  document.getElementById(displayOutput).innerHTML += dataSource.data[i][label];
+                  document.getElementById(displayOutput).innerHTML += "<br>";
+                  document.getElementById(displayOutput).innerHTML += "<br>";
               }
           }
       }
