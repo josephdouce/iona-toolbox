@@ -7,7 +7,6 @@
  * Kroc Camen, and the H5BP dev community and team.
  */
 
-
 /* ==========================================================================
    Base styles: opinionated defaults
    ========================================================================== */
@@ -101,16 +100,15 @@ textarea {
 }
 
 body {
-   -webkit-user-select: none;
+  -webkit-user-select: none;
 }
 
 body {
-   -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent;
 }
 
-
 .w3-code {
-   -webkit-user-select: all;
+  -webkit-user-select: all;
 }
 
 .data-display {
@@ -200,7 +198,6 @@ body {
   clear: both;
 }
 
-
 /* ==========================================================================
    EXAMPLE Media Queries for Responsive Design.
    These examples override the primary ('mobile first') styles.
@@ -212,12 +209,11 @@ body {
 }
 
 @media print,
-(-webkit-min-device-pixel-ratio: 1.25),
-(min-resolution: 1.25dppx),
-(min-resolution: 120dpi) {
+  (-webkit-min-device-pixel-ratio: 1.25),
+  (min-resolution: 1.25dppx),
+  (min-resolution: 120dpi) {
   /* Style adjustments for high resolution devices */
 }
-
 
 /* ==========================================================================
    Print styles.
@@ -226,7 +222,6 @@ body {
    ========================================================================== */
 
 @media print {
-
   *,
   *:before,
   *:after {
@@ -244,11 +239,11 @@ body {
   }
 
   a[href]:after {
-    content: " ("attr(href) ")";
+    content: " (" attr(href) ")";
   }
 
   abbr[title]:after {
-    content: " ("attr(title) ")";
+    content: " (" attr(title) ")";
   }
 
   /*

@@ -1,11 +1,34 @@
-var elecIsolations = null;
-var valves = null;
-var sensors = null;
-var emergencyStations = null;
 var passphrase = null;
-var passphraseEncrypt = null;
+var dataStore = {};
 let deferredPrompt = null;
 
+// Log in button action
+function login() {
+  passphrase = document.getElementById("login-password").value;
+  // File path, display tab, data storage variable
+  processFile(
+    "encrypted_csv_files/electrical_isolation_list_encrypted.csv",
+    "Isolations",
+    dataStore["elecIsolations"]
+  );
+  processFile(
+    "encrypted_csv_files/emergency_stations_encrypted.csv",
+    "Emergency Stations",
+    dataStore["emergencyStations"]
+  );
+  processFile(
+    "encrypted_csv_files/hydraulic_valves_encrypted.csv",
+    "Valves",
+    dataStore["valves"]
+  );
+  processFile(
+    "encrypted_csv_files/engine_sensors_encrypted.csv",
+    "Sensors",
+    dataStore["sensors"]
+  );
+}
+
+// Menu structure to use to build the UI higherachy
 var menuStructure = {
   label: "Home",
   sub: [
@@ -24,7 +47,7 @@ var menuStructure = {
           sub: [
             {
               label: "Sensors",
-              icon: "mdi-thermometer",
+              icon: "mdi-coolant-temperature",
               sub: null,
             },
           ],
@@ -37,14 +60,19 @@ var menuStructure = {
       sub: [
         {
           label: "Isolations",
-          icon: "mdi-flash",
+          icon: "mdi-electric-switch",
+          sub: null,
+        },
+        {
+          label: "Engine",
+          icon: "mdi-engine",
           sub: null,
         },
       ],
     },
     {
-      label: "Safety",
-      icon: "mdi-safety-goggles",
+      label: "Emergency",
+      icon: "mdi-alarm-light",
       sub: [
         {
           label: "Emergency Stations",
@@ -53,9 +81,67 @@ var menuStructure = {
         },
       ],
     },
+    {
+      label: "Plumbers",
+      icon: "mdi-water-pump",
+      sub: [
+        {
+          label: "Mini-Fog",
+          icon: "mdi-sprinkler-variant mdi-rotate-180",
+          sub: null,
+        },
+        {
+          label: "Fire Main",
+          icon: "mdi-fire-hydrant",
+          sub: null,
+        },
+        {
+          label: "Potable Water",
+          icon: "mdi-water",
+          sub: null,
+        },
+        {
+          label: "Back Flow Preventers",
+          icon: "mdi-pipe-disconnected",
+          sub: null,
+        },
+        {
+          label: "Bulkhead Valves",
+          icon: "mdi-reflect-vertical mdi-rotate-90",
+          sub: null,
+        },
+        {
+          label: "Black Water",
+          icon: "mdi-toilet",
+          sub: null,
+        },
+      ],
+    },
+    {
+      label: "HVAC",
+      icon: "mdi-hvac",
+      sub: [
+        {
+          label: "Fan Coils",
+          icon: "mdi-thermometer",
+          sub: null,
+        },
+        {
+          label: "Fan Rooms",
+          icon: "mdi-fan mdi-spin",
+          sub: null,
+        },
+        {
+          label: "Dampers",
+          icon: "mdi-valve",
+          sub: null,
+        },
+      ],
+    },
   ],
 };
 
+// Build the menu from the menuStructure object
 function menuBuilder(parent) {
   for (var y in parent.sub) {
     var p, newElement, newElement3, newElement3, newElement4;
@@ -133,7 +219,7 @@ function sendMail() {
     encodeURIComponent(document.getElementById("mailBody").value);
 }
 
-//Encrypt the selected file and display the data
+// Encrypt the selected file and display the data
 function encryptFile() {
   var file = document.querySelector("input[type=file]").files[0];
   var reader = new FileReader();
@@ -153,7 +239,7 @@ function encryptFile() {
   }
 }
 
-//Encrypt the selected file and display the data
+// Decrypt the selected file and display the data
 function decryptFile() {
   var file = document.querySelector("input[type=file]").files[0];
   var reader = new FileReader();
@@ -171,57 +257,11 @@ function decryptFile() {
   }
 }
 
-// Log in button action
-function login() {
-  passphrase = document.getElementById("login-password").value;
-
-  processFile(
-    "encrypted_csv_files/electrical_isolation_list_encrypted.csv",
-    "Isolations",
-    "selectIsolation",
-    "displayDataElecIsolations",
-    "isolationsSearchInput",
-    elecIsolations
-  );
-
-  processFile(
-    "encrypted_csv_files/emergency_stations_encrypted.csv",
-    "Emergency Stations",
-    "selectEmergencyStation",
-    "displayDataEmergencyStations",
-    "emergencyStationsSearchInput",
-    emergencyStations
-  );
-
-  processFile(
-    "encrypted_csv_files/hydraulic_valves_encrypted.csv",
-    "Valves",
-    "selectValve",
-    "displayDataValve",
-    "valveSearchInput",
-    valves
-  );
-  // Fetch encrypted .csv file and process is with papa
-
-  processFile(
-    "encrypted_csv_files/engine_sensors_encrypted.csv",
-    "Sensors",
-    "selectSensor",
-    "displayDataSensors",
-    "sensorsSearchInput",
-    sensors
-  );
-  // Fetch encrypted .csv file and process is with papa
-}
-
-function processFile(
-  filePath,
-  tab,
-  selectId,
-  displayId,
-  searchInputId,
-  dataSource
-) {
+// Process csv file and display the data in the relevent tab
+function processFile(filePath, tab, dataSource) {
+  var selectId = tab.replace(/ /g, "").toLowerCase() + "Select";
+  var displayId = tab.replace(/ /g, "").toLowerCase() + "Display";
+  var searchInputId = tab.replace(/ /g, "").toLowerCase() + "SearchInput";
   // Fetch encrypted .csv file and process is with papa
   fetch(filePath)
     .then((response) => response.text())
@@ -235,7 +275,7 @@ function processFile(
         return;
       }
 
-      // Parse decrypted data and phones valves variable
+      // Parse decrypted data
       Papa.parse(originalText, {
         header: true,
         complete: function (results) {
@@ -247,6 +287,7 @@ function processFile(
             option.value = dataSource.data[i]["Id"];
             document.getElementById(selectId).add(option);
           }
+          // Enter key and change event handlers
           $("#" + searchInputId).keypress(function (event) {
             if (event.keyCode === 13) {
               searchData(
@@ -263,6 +304,8 @@ function processFile(
             }
           });
           dropdownSelected(selectId, displayId, dataSource);
+
+          // Hide password panel
           document.getElementById("login-page").style.display = "none";
           document.getElementById("passwordPanel").style.display = "none";
           document.getElementById("main-content").style.display = "block";
@@ -271,10 +314,10 @@ function processFile(
     });
 }
 
-// build UI for each page
+// Build UI page
 
 function pageBuilder(tab, selectId, displayId, searchInputId) {
-  // search box
+  // Search box
   p = document.getElementById(tab);
   newElement = document.createElement("div");
   newElement2 = document.createElement("div");
@@ -292,7 +335,7 @@ function pageBuilder(tab, selectId, displayId, searchInputId) {
 
   p.appendChild(newElement);
 
-  // select box
+  // Select box
   p = document.getElementById(tab);
   newElement = document.createElement("div");
   newElement2 = document.createElement("div");
@@ -311,7 +354,7 @@ function pageBuilder(tab, selectId, displayId, searchInputId) {
 
   p.appendChild(newElement);
 
-  // data view
+  // Data view
   newElement = document.createElement("div");
   newElement2 = document.createElement("div");
   newElement4 = document.createElement("p");
@@ -330,6 +373,7 @@ function pageBuilder(tab, selectId, displayId, searchInputId) {
   p.appendChild(newElement);
 }
 
+// Search the data source and update the options in th dropdown menu
 function searchData(searchTerm, dataSource, outputDropdown) {
   document.getElementById(outputDropdown).innerText = null;
   for (i = 0; i < dataSource.data.length; i++) {
@@ -346,6 +390,7 @@ function searchData(searchTerm, dataSource, outputDropdown) {
   }
 }
 
+// Update the data display when a new item is selected
 function dropdownSelected(selectInput, displayOutput, dataSource) {
   var input = document.getElementById(selectInput).value;
   document.getElementById(displayOutput).innerHTML = "";
