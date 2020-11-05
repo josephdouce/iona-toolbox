@@ -6,26 +6,15 @@ let deferredPrompt = null;
 function login() {
   passphrase = document.getElementById("login-password").value;
   // File path, display tab, data storage variable
-  processFile(
-    "encrypted_csv_files/electrical_isolation_list_encrypted.csv",
-    "Isolations",
-    dataStore["elecIsolations"]
-  );
-  processFile(
-    "encrypted_csv_files/emergency_stations_encrypted.csv",
-    "Emergency Stations",
-    dataStore["emergencyStations"]
-  );
-  processFile(
-    "encrypted_csv_files/hydraulic_valves_encrypted.csv",
-    "Valves",
-    dataStore["valves"]
-  );
-  processFile(
-    "encrypted_csv_files/engine_sensors_encrypted.csv",
-    "Sensors",
-    dataStore["sensors"]
-  );
+  processFile("encrypted_csv_files/electrical_isolation_list_encrypted.csv", "Isolations", dataStore["elecIsolations"]);
+  processFile("encrypted_csv_files/emergency_stations_encrypted.csv", "Emergency Stations", dataStore["emergencyStations"]);
+  processFile("encrypted_csv_files/hydraulic_valves_encrypted.csv", "Valves", dataStore["valves"]);
+  processFile("encrypted_csv_files/engine_sensors_encrypted.csv", "Sensors", dataStore["sensors"]);
+  processFile("encrypted_csv_files/hvac_hood_dampers_encrypted.csv", "Hood Dampers", dataStore["hoodDampers"]);
+  processFile("encrypted_csv_files/hvac_fm_fp_encrypted.csv", "FM FP", dataStore["fmFp"]);
+  processFile("encrypted_csv_files/hvac_acr_locations_encrypted.csv", "ACR Locations", dataStore["acrLocations"]);
+  processFile("encrypted_csv_files/hvac_ms_fans_encrypted.csv", "Machinery Fans", dataStore["msFans"]);
+  processFile("encrypted_csv_files/plumbers_potable_strp_encrypted.csv", "Potable Water SRTP", dataStore["potableSrtp"]);
 }
 
 // Menu structure to use to build the UI higherachy
@@ -85,36 +74,36 @@ var menuStructure = {
       label: "Plumbers",
       icon: "mdi-water-pump",
       sub: [
+        // {
+        //   label: "Mini-Fog",
+        //   icon: "mdi-sprinkler-variant mdi-rotate-180",
+        //   sub: null,
+        // },
+        // {
+        //   label: "Fire Main",
+        //   icon: "mdi-fire-hydrant",
+        //   sub: null,
+        // },
         {
-          label: "Mini-Fog",
-          icon: "mdi-sprinkler-variant mdi-rotate-180",
-          sub: null,
-        },
-        {
-          label: "Fire Main",
-          icon: "mdi-fire-hydrant",
-          sub: null,
-        },
-        {
-          label: "Potable Water",
+          label: "Potable Water SRTP",
           icon: "mdi-water",
           sub: null,
         },
-        {
-          label: "Back Flow Preventers",
-          icon: "mdi-pipe-disconnected",
-          sub: null,
-        },
-        {
-          label: "Bulkhead Valves",
-          icon: "mdi-reflect-vertical mdi-rotate-90",
-          sub: null,
-        },
-        {
-          label: "Black Water",
-          icon: "mdi-toilet",
-          sub: null,
-        },
+        // {
+        //   label: "Back Flow Preventers",
+        //   icon: "mdi-pipe-disconnected",
+        //   sub: null,
+        // },
+        // {
+        //   label: "Bulkhead Valves",
+        //   icon: "mdi-reflect-vertical mdi-rotate-90",
+        //   sub: null,
+        // },
+        // {
+        //   label: "Black Water",
+        //   icon: "mdi-toilet",
+        //   sub: null,
+        // },
       ],
     },
     {
@@ -122,17 +111,22 @@ var menuStructure = {
       icon: "mdi-hvac",
       sub: [
         {
-          label: "Fan Coils",
+          label: "ACR Locations",
           icon: "mdi-thermometer",
           sub: null,
         },
         {
-          label: "Fan Rooms",
+          label: "FM FP",
           icon: "mdi-fan mdi-spin",
           sub: null,
         },
         {
-          label: "Dampers",
+          label: "Machinery Fans",
+          icon: "mdi-fan mdi-spin",
+          sub: null,
+        },
+        {
+          label: "Hood Dampers",
           icon: "mdi-valve",
           sub: null,
         },
@@ -155,19 +149,11 @@ function menuBuilder(parent) {
 
     newElement.setAttribute("class", "w3-col l3 m4 s6 w3-margin-bottom");
 
-    newElement2.setAttribute(
-      "class",
-      "w3-card w3-container w3-display-container w3-theme-l5"
-    );
+    newElement2.setAttribute("class", "w3-card w3-container w3-display-container w3-theme-l5");
     newElement2.setAttribute("style", "padding-top: 100%");
     newElement2.setAttribute("onclick", "openTab('" + sub["label"] + "')");
 
-    newElement3.setAttribute(
-      "class",
-      "mdi " +
-        sub["icon"] +
-        " w3-margin-bottom w3-text-theme w3-hover-opacity w3-display-middle w3-jumbo"
-    );
+    newElement3.setAttribute("class", "mdi " + sub["icon"] + " w3-margin-bottom w3-text-theme w3-hover-opacity w3-display-middle w3-jumbo");
 
     newElement4.setAttribute("class", "w3-text-theme w3-display-topmiddle");
     newElement4.innerHTML = sub["label"];
@@ -180,10 +166,7 @@ function menuBuilder(parent) {
     p = document.getElementById("main-content");
     newElement = document.createElement("div");
 
-    newElement.setAttribute(
-      "class",
-      "w3-row-padding w3-center w3-margin-top tabPage"
-    );
+    newElement.setAttribute("class", "w3-row-padding w3-center w3-margin-top tabPage");
     newElement.setAttribute("style", "display:none");
     newElement.setAttribute("id", sub["label"]);
     p.appendChild(newElement);
@@ -212,9 +195,7 @@ function sendMail() {
     at +
     host +
     "?subject=" +
-    encodeURIComponent(
-      "Iona Toolbox Support: " + document.getElementById("senderName").value
-    ) +
+    encodeURIComponent("Iona Toolbox Support: " + document.getElementById("senderName").value) +
     "&body=" +
     encodeURIComponent(document.getElementById("mailBody").value);
 }
@@ -225,10 +206,7 @@ function encryptFile() {
   var reader = new FileReader();
 
   reader.onload = function (event) {
-    var ciphertext = CryptoJS.AES.encrypt(
-      event.target.result,
-      passphrase
-    ).toString();
+    var ciphertext = CryptoJS.AES.encrypt(event.target.result, passphrase).toString();
     document.getElementById("encrypt-display").innerHTML = ciphertext;
   };
 
@@ -290,11 +268,7 @@ function processFile(filePath, tab, dataSource) {
           // Enter key and change event handlers
           $("#" + searchInputId).keypress(function (event) {
             if (event.keyCode === 13) {
-              searchData(
-                document.getElementById(searchInputId).value,
-                dataSource,
-                selectId
-              );
+              searchData(document.getElementById(searchInputId).value, dataSource, selectId);
               dropdownSelected(selectId, displayId, dataSource);
             }
           });
@@ -362,10 +336,7 @@ function pageBuilder(tab, selectId, displayId, searchInputId) {
   newElement.setAttribute("class", "w3-row-padding");
   newElement2.setAttribute("class", "w3-col s12 m12 l12");
   newElement3.setAttribute("id", displayId);
-  newElement3.setAttribute(
-    "class",
-    "data-display w3-col s12 m12 l12 w3-margin-top"
-  );
+  newElement3.setAttribute("class", "data-display w3-col s12 m12 l12 w3-margin-top");
 
   newElement.appendChild(newElement2);
   newElement2.appendChild(newElement3);
@@ -377,11 +348,7 @@ function pageBuilder(tab, selectId, displayId, searchInputId) {
 function searchData(searchTerm, dataSource, outputDropdown) {
   document.getElementById(outputDropdown).innerText = null;
   for (i = 0; i < dataSource.data.length; i++) {
-    if (
-      dataSource.data[i]["Display Name"]
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    ) {
+    if (dataSource.data[i]["Display Name"].toLowerCase().includes(searchTerm.toLowerCase())) {
       var option = document.createElement("option");
       option.text = dataSource.data[i]["Display Name"];
       option.value = dataSource.data[i]["Id"];
@@ -400,8 +367,7 @@ function dropdownSelected(selectInput, displayOutput, dataSource) {
         if (label != "Id" && label != "Display Name") {
           document.getElementById(displayOutput).innerHTML += label;
           document.getElementById(displayOutput).innerHTML += ": ";
-          document.getElementById(displayOutput).innerHTML +=
-            dataSource.data[i][label];
+          document.getElementById(displayOutput).innerHTML += dataSource.data[i][label];
           document.getElementById(displayOutput).innerHTML += "<br>";
           document.getElementById(displayOutput).innerHTML += "<br>";
         }
@@ -477,14 +443,12 @@ async function onLoadFunction() {
   });
 
   // Execute a function when the user releases a key on the keyboard
-  document
-    .getElementById("login-password")
-    .addEventListener("keyup", function (event) {
-      // Number 13 is the "Enter" key on the keyboard
-      if (event.keyCode === 13) {
-        login();
-      }
-    });
+  document.getElementById("login-password").addEventListener("keyup", function (event) {
+    // Number 13 is the "Enter" key on the keyboard
+    if (event.keyCode === 13) {
+      login();
+    }
+  });
 
   menuBuilder(menuStructure);
 }
