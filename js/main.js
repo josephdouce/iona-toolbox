@@ -6,15 +6,15 @@ let deferredPrompt = null;
 function login() {
   passphrase = document.getElementById("login-password").value;
   // File path, display tab, data storage variable
-  processFile("encrypted_csv_files/electrical_isolation_list_encrypted.csv", "Isolations", dataStore["elecIsolations"]);
-  processFile("encrypted_csv_files/emergency_stations_encrypted.csv", "Emergency Stations", dataStore["emergencyStations"]);
-  processFile("encrypted_csv_files/hydraulic_valves_encrypted.csv", "Valves", dataStore["valves"]);
-  processFile("encrypted_csv_files/engine_sensors_encrypted.csv", "Sensors", dataStore["sensors"]);
-  processFile("encrypted_csv_files/hvac_hood_dampers_encrypted.csv", "Hood Dampers", dataStore["hoodDampers"]);
-  processFile("encrypted_csv_files/hvac_fm_fp_encrypted.csv", "FM FP", dataStore["fmFp"]);
-  processFile("encrypted_csv_files/hvac_acr_locations_encrypted.csv", "ACR Locations", dataStore["acrLocations"]);
-  processFile("encrypted_csv_files/hvac_ms_fans_encrypted.csv", "Machinery Fans", dataStore["msFans"]);
-  processFile("encrypted_csv_files/plumbers_potable_strp_encrypted.csv", "Potable Water SRTP", dataStore["potableSrtp"]);
+  processFile("encrypted_csv_files/electrical_isolation_encrypted.csv", "Isolations");
+  processFile("encrypted_csv_files/emergency_stations_encrypted.csv", "Emergency Stations");
+  processFile("encrypted_csv_files/hydraulic_valves_encrypted.csv", "Valves");
+  processFile("encrypted_csv_files/engine_sensors_encrypted.csv", "Sensors");
+  processFile("encrypted_csv_files/hvac_hood_dampers_encrypted.csv", "Hood Dampers");
+  processFile("encrypted_csv_files/hvac_fm_fp_encrypted.csv", "FM FP");
+  processFile("encrypted_csv_files/hvac_acr_locations_encrypted.csv", "ACR Locations");
+  processFile("encrypted_csv_files/hvac_ms_fans_encrypted.csv", "Machinery Fans");
+  processFile("encrypted_csv_files/plumbers_potable_strp_encrypted.csv", "Potable Water SRTP");
 }
 
 // Menu structure to use to build the UI higherachy
@@ -235,8 +235,33 @@ function decryptFile() {
   }
 }
 
+function downloadFile() {
+  //inputTextToSave--> the text area from which the text to save is
+  //taken from
+  var textToSave = document.getElementById("encrypt-display").innerHTML;
+  var textToSaveAsBlob = new Blob([textToSave], { type: "text/plain" });
+  var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+  //inputFileNameToSaveAs-->The text field in which the user input for
+  //the desired file name is input into.
+  var fileNameToSaveAs = document.getElementById("inputFile").value.slice(12);
+
+  var downloadLink = document.createElement("a");
+  downloadLink.download = fileNameToSaveAs;
+  downloadLink.innerHTML = "Download File";
+  downloadLink.href = textToSaveAsURL;
+  downloadLink.onclick = destroyClickedElement;
+  downloadLink.style.display = "none";
+  document.body.appendChild(downloadLink);
+
+  downloadLink.click();
+}
+
+function destroyClickedElement(event) {
+  document.body.removeChild(event.target);
+}
+
 // Process csv file and display the data in the relevent tab
-function processFile(filePath, tab, dataSource) {
+function processFile(filePath, tab) {
   var selectId = tab.replace(/ /g, "").toLowerCase() + "Select";
   var displayId = tab.replace(/ /g, "").toLowerCase() + "Display";
   var searchInputId = tab.replace(/ /g, "").toLowerCase() + "SearchInput";
@@ -257,27 +282,27 @@ function processFile(filePath, tab, dataSource) {
       Papa.parse(originalText, {
         header: true,
         complete: function (results) {
-          dataSource = results;
+          dataStore[filePath.slice(20, -14)] = results;
           pageBuilder(tab, selectId, displayId, searchInputId);
-          for (i = 0; i < dataSource.data.length; i++) {
+          for (i = 0; i < dataStore[filePath.slice(20, -14)].data.length; i++) {
             var option = document.createElement("option");
-            option.text = dataSource.data[i]["Display Name"];
-            option.value = dataSource.data[i]["Id"];
+            option.text = dataStore[filePath.slice(20, -14)].data[i]["Display Name"];
+            option.value = dataStore[filePath.slice(20, -14)].data[i]["Id"];
             document.getElementById(selectId).add(option);
           }
           // Enter key and change event handlers
           $("#" + searchInputId).keypress(function (event) {
             if (event.keyCode === 13) {
-              searchData(document.getElementById(searchInputId).value, dataSource, selectId);
-              dropdownSelected(selectId, displayId, dataSource);
+              searchData(document.getElementById(searchInputId).value, dataStore[filePath.slice(20, -14)], selectId);
+              dropdownSelected(selectId, displayId, dataStore[filePath.slice(20, -14)]);
             }
           });
           $("#" + selectId).change(function (event) {
             if (event) {
-              dropdownSelected(selectId, displayId, dataSource);
+              dropdownSelected(selectId, displayId, dataStore[filePath.slice(20, -14)]);
             }
           });
-          dropdownSelected(selectId, displayId, dataSource);
+          dropdownSelected(selectId, displayId, dataStore[filePath.slice(20, -14)]);
 
           // Hide password panel
           document.getElementById("login-page").style.display = "none";
