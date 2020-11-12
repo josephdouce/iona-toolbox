@@ -15,5 +15,18 @@
   "display": "standalone",
   "start_url": "/iona-toolbox/index.html",
   "background_color": "#fafafa",
-  "theme_color": "#fafafa"
+  "theme_color": "#fafafa",
+  "categories": ["productivity", "engineering", "tools"],
+  "screenshots" : [
+    {
+      "src": "screenshot1.PNG",
+      "sizes": "720x1280",
+      "type": "image/png"
+    },
+    {
+      "src": "screenshot2.PNG",
+      "sizes": "720x1280",
+      "type": "image/png"
+    }
+  ]
 }
