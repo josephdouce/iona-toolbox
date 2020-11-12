@@ -2,12 +2,12 @@
   "short_name": "Iona Toolbox",
   "name": "Iona Toolbox",
   "icons": [{
-    "src": "icon.png",
+    "src": "/iona-toolbox/icon.png",
     "type": "image/png",
     "sizes": "192x192"
   },
   {
-    "src": "icon.png",
+    "src": "/iona-toolbox/icon.png",
     "type": "image/png",
     "sizes": "600x600"
   }
@@ -19,12 +19,12 @@
   "categories": ["productivity", "engineering", "tools"],
   "screenshots" : [
     {
-      "src": "screenshot1.PNG",
+      "src": "/iona-toolbox/screenshot1.PNG",
       "sizes": "720x1280",
       "type": "image/png"
     },
     {
-      "src": "screenshot2.PNG",
+      "src": "/iona-toolbox/screenshot2.PNG",
       "sizes": "720x1280",
       "type": "image/png"
     }
