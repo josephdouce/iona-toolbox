@@ -52,11 +52,6 @@ var menuStructure = {
           icon: "mdi-electric-switch",
           sub: null,
         },
-        {
-          label: "Engine",
-          icon: "mdi-engine",
-          sub: null,
-        },
       ],
     },
     {

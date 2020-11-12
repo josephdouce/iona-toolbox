@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js" lang="">
+<html class="no-js" lang="en">
 
 <head>
   <!-- Site Info-->
@@ -42,7 +42,7 @@
 
   <div id="login-page" class="w3-content w3-theme-l4 w3-padding-16" style="height:100vh">
 
-  <div class="w3-row-padding w3-padding-16 w3-display-container" style="height:50vh">
+    <div class="w3-row-padding w3-padding-16 w3-display-container" style="height:50vh">
       <div class="w3-col s12 m4 l3 w3-display-bottommiddle">
         <input id="login-username" type="username" name="username" placeholder="Username" list="usernames"
           class="w3-input w3-border" autofocus />
@@ -202,26 +202,18 @@
   <script src="js/vendor/papaparse.js"></script>
   <script src="js/main.js"></script>
 
-  <script>
-    // This is the service worker with the Cache-first network
+  <script type="module">
+    // This is the "Offline copy of pages" service worker
 
-    // Add this below content to your HTML page, or add the js file to your page at the very top to register service worker
+    /*
+    This code uses the pwa-update web component https://github.com/pwa-builder/pwa-update to register your service worker,
+    tell the user when there is an update available and let the user know when your PWA is ready to use offline.
+    */
 
-    // Check compatibility for the browser we're running this in
-    if ("serviceWorker" in navigator) {
-      if (navigator.serviceWorker.controller) {
-        console.log("[PWA Builder] active service worker found, no need to register");
-      } else {
-        // Register the service worker
-        navigator.serviceWorker
-          .register("pwabuilder-sw.js", {
-            scope: "./"
-          })
-          .then(function (reg) {
-            console.log("[PWA Builder] Service worker has been registered for scope: " + reg.scope);
-          });
-      }
-    }
+    import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
+
+    const el = document.createElement('pwa-update');
+    document.body.appendChild(el);
 
   </script>
 
