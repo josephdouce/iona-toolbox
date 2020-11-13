@@ -15,6 +15,9 @@ function login() {
   processFile("encrypted_csv_files/hvac_acr_locations_encrypted.csv", "ACR Locations");
   processFile("encrypted_csv_files/hvac_ms_fans_encrypted.csv", "Machinery Fans");
   processFile("encrypted_csv_files/plumbers_potable_strp_encrypted.csv", "Potable Water SRTP");
+  processFile("encrypted_csv_files/qcv_encrypted.csv", "QCV");
+  processFile("encrypted_csv_files/minifog_local_panels_encrypted.csv", "Minifog Local Panels");
+  processFile("encrypted_csv_files/minifog_machinery_section_valves_encrypted.csv", "Minifog Machinery Section Valves");
 }
 
 // Menu structure to use to build the UI higherachy
@@ -55,12 +58,27 @@ var menuStructure = {
       ],
     },
     {
-      label: "Emergency",
+      label: "Saftey",
       icon: "mdi-alarm-light",
       sub: [
         {
           label: "Emergency Stations",
           icon: "mdi-bullhorn",
+          sub: null,
+        },
+        {
+          label: "Minifog Local Panels",
+          icon: "mdi-gesture-tap-hold",
+          sub: null,
+        },
+        {
+          label: "Minifog Machinery Section Valves",
+          icon: "mdi-reflect-vertical mdi-rotate-90",
+          sub: null,
+        },
+        {
+          label: "QCV",
+          icon: "mdi-fuel",
           sub: null,
         },
       ],
