@@ -18,6 +18,7 @@ function login() {
   processFile("encrypted_csv_files/qcv_encrypted.csv", "QCV");
   processFile("encrypted_csv_files/minifog_local_panels_encrypted.csv", "Minifog Local Panels");
   processFile("encrypted_csv_files/minifog_machinery_section_valves_encrypted.csv", "Minifog Machinery Section Valves");
+  processFile("encrypted_csv_files/minifog_accomodation_section_valves_encrypted.csv", "Minifog Accomodation Section Valves");
 }
 
 // Menu structure to use to build the UI higherachy
@@ -73,6 +74,11 @@ var menuStructure = {
         },
         {
           label: "Minifog Machinery Section Valves",
+          icon: "mdi-reflect-vertical mdi-rotate-90",
+          sub: null,
+        },
+        {
+          label: "Minifog Accomodation Section Valves",
           icon: "mdi-reflect-vertical mdi-rotate-90",
           sub: null,
         },
